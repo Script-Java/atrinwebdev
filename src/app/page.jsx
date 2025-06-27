@@ -1,23 +1,20 @@
-import Image from "next/image";
-import Navbar from "./components/navbar";
 import Main from "./components/main";
-import Footer from "./components/footer";
-import About from "./components/about";
 import Services from "./components/services";
-import Faq from "./components/faq";
-import Contact from "./components/contact";
+import Mission from "./components/mission";
 import Work from "./components/work";
+import Contact from "./components/contact";
+import Footer from "./components/footer";
+import Faq from "./components/faq";
 
 export default function Home() {
   return (
-    <div className="">
-      <Navbar />
+    <div className="uppercase">
       <Main />
+      <Services />
+      <Mission></Mission>
       <Work></Work>
-      <About></About>
-      <Services></Services>
-      <Faq></Faq>
       <Contact></Contact>
+      <Faq></Faq>
       <Footer />
     </div>
   );

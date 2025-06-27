@@ -1,47 +1,71 @@
-"use client"
+"use client";
+
 import Image from "next/image";
-import laptop from "../assets/img/tablet.svg";
+import Link from "next/link";
+import bgImage from "../assets/img/hero.jpg";
+import Navbar from "./navbar";
+import { motion } from "framer-motion";
 
 const Main = () => {
-  // Function for smooth scrolling to sections
-  const scrollToSection = (id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
   return (
-    <div id="home" className="bg-stars pt-96 lg:pt-32 pb-32">
-      <div className="container mt-32 lg:mt-32 m-auto p-4">
-        <div className="flex items-center h-[85vh] justify-center flex-col space-y-6 p-4">
-          <h1 className="text-6xl max-w-5xl text-center">
-            Transform Your Online Presence and Drive Real Growth
-          </h1>
-          <p className="text-xl max-w-3xl text-center">
-            At atrinwebdev, we create custom websites, powerful SEO,
-            high-converting ads, and business software to help your brand grow
-            and succeed online.
-          </p>
-          <div className="flex space-x-4">
-            {/* Smooth scroll to "contact" section */}
-            <button className="btn btn-primary" onClick={() => scrollToSection("contact")}>
-              Get Started
-            </button>
-
-            {/* Smooth scroll to "about" section */}
-            <button className="btn btn-outline" onClick={() => scrollToSection("about")}>
-              Learn More
-            </button>
-          </div>
-          <div className="flex items-center justify-center">
-            <Image src={laptop} className="max-w-4xl w-full" alt="laptop text" />
-          </div>
-        </div>
+    <main className="relative w-full h-screen overflow-hidden" id="home">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={bgImage}
+          alt="Background Image"
+          layout="fill"
+          objectFit="cover"
+          className="object-cover"
+        />
       </div>
-    </div>
+
+      <div className="relative z-30">
+        <Navbar />
+      </div>
+
+      <div className="absolute inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-white flex flex-col gap-4 items-center text-center p-8"
+        >
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.2 }}
+            className="text-4xl md:text-6xl max-w-7xl font-bold uppercase mb-4"
+          >
+            Accelerate Your Business Growth with a Powerful Online Presence
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.4 }}
+            className="text-lg md:text-xl max-w-3xl mx-auto uppercase mb-6"
+          >
+            Website development, SEO, Google Ads, and logo design — everything you need to grow your online presence.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex gap-4 justify-center items-center"
+          >
+            <Link href="/#contact" legacyBehavior>
+              <a className="btn bg-white text-black hover:bg-black hover:text-white uppercase px-8">Contact Us</a>
+            </Link>
+            <Link href="https://calendar.app.google/sc4BoYLbzk73nWHB9" legacyBehavior>
+              <a className="btn btn-outline uppercase">Schedule Call</a>
+            </Link>
+          </motion.div>
+        </motion.div>
+      </div>
+    </main>
   );
 };
 
 export default Main;
-
