@@ -62,7 +62,7 @@ export default function Mission() {
               E-commerce Builds
             </div>
             <Link
-              href="/contact"
+              href="/#contact"
               className="bg-white text-black px-5 py-2 text-sm font-semibold uppercase"
             >
               Start Your Project
