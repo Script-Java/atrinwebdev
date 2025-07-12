@@ -6,26 +6,30 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function Contact() {
+  // State for form data, budget field removed
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
     phone: "",
-    budget: "",
     service: ""
   });
 
+  // State for form submission status
   const [status, setStatus] = useState("");
 
+  // Handles changes in form inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handles the form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("Sending...");
 
     try {
+      // API endpoint for form submission
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: {
@@ -36,13 +40,14 @@ export default function Contact() {
 
       const result = await res.json();
       if (res.ok) {
-        setStatus("Message sent!");
-        setFormData({ name: "", email: "", message: "", phone: "", budget: "", service: "" });
+        setStatus("Thank you! Your message has been sent.");
+        // Clear the form on successful submission, budget field removed
+        setFormData({ name: "", email: "", message: "", phone: "", service: "" });
       } else {
-        setStatus(result.error || "Failed to send message.");
+        setStatus(result.error || "Failed to send message. Please try again.");
       }
     } catch (err) {
-      setStatus("Something went wrong.");
+      setStatus("An unexpected error occurred. Please try again later.");
     }
   };
 
@@ -56,34 +61,36 @@ export default function Contact() {
           viewport={{ once: true }}
           className="text-center mb-16 px-4"
         >
-          <h1 className="text-3xl md:text-5xl font-semibold mb-4">Get In Touch</h1>
-          <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto">
-            We’d love to hear from you! Whether you have a question about our services, pricing, or anything else, our team is ready to help.
+          <h2 className="text-base font-semibold leading-7 text-indigo-400 uppercase">Contact Us</h2>
+          <h1 className="mt-2 text-3xl md:text-5xl font-semibold mb-4">Get In Touch</h1>
+          <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto mt-6">
+            Have a question or some feedback? We're here to help businesses in McKinney and North Dallas succeed online. Reach out today.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+          {/* Contact Cards Section */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="grid grid-cols-1 gap-6 bg-[#0b0b0b] p-6 h-full"
+            className="grid grid-cols-1 gap-6 bg-[#0b0b0b] p-6 h-full rounded-3xl ring-1 ring-indigo-500/30"
           >
             {[{
-              icon: <FaWhatsapp className="text-white text-2xl" />, title: "Connect on WhatsApp", description: "Easily reach out to us on WhatsApp to chat about your project.", button: "SEND MESSAGE", link: "https://api.whatsapp.com/send/?phone=14699013579&text&type=phone_number&app_absent=0"
+              icon: <FaWhatsapp className="text-indigo-400 text-2xl" />, title: "Chat on WhatsApp", description: "Have a quick question? Send us a message for a fast response.", button: "Start a Chat", link: "https://api.whatsapp.com/send/?phone=14699013579&text&type=phone_number&app_absent=0"
             }, {
-              icon: <FaEnvelope className="text-white text-2xl" />, title: "Email Directly", description: "Reach out to us by email to connect with a team member and discuss your project!", button: "EMAIL US", link: "mailto:atrindev@gmail.com"
+              icon: <FaEnvelope className="text-indigo-400 text-2xl" />, title: "Send an Email", description: "Prefer email? Send us your project details and we'll get back to you promptly.", button: "Email Us", link: "mailto:atrindev@gmail.com"
             }, {
-              icon: <FaCalendarAlt className="text-white text-2xl" />, title: "Schedule a Call", description: "Schedule a call with our team today to explore your project goals.", button: "BOOK A CALL", link: "https://calendar.app.google/aCBkFPwuvuttZrFV6"
+              icon: <FaCalendarAlt className="text-indigo-400 text-2xl" />, title: "Book a Discovery Call", description: "Schedule a complimentary call to discuss your project goals in detail.", button: "Schedule Now", link: "https://calendar.app.google/aCBkFPwuvuttZrFV6"
             }].map((card, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                transition={{ duration: 0.4, delay: idx * 0.1 + 0.3 }}
                 viewport={{ once: true }}
-                className="border-t border-white p-6 flex flex-col justify-between h-[220px]"
+                className="border-t border-indigo-500/30 p-6 flex flex-col justify-between"
               >
                 <div className="flex items-start gap-4">
                   {card.icon}
@@ -92,52 +99,49 @@ export default function Contact() {
                     <p className="text-sm text-gray-400">{card.description}</p>
                   </div>
                 </div>
-                <Link href={card.link} className="border btn border-white w-full py-2 text-xs mt-4" target="_blank">
+                <Link href={card.link} className="rounded-md bg-white/10 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white/20 w-full text-center mt-4" target="_blank" rel="noopener noreferrer">
                   {card.button}
                 </Link>
               </motion.div>
             ))}
           </motion.div>
 
+          {/* Contact Form Section */}
           <motion.form
             onSubmit={handleSubmit}
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
-            className="flex flex-col gap-6 bg-[#0b0b0b] p-6 h-full justify-between"
+            className="flex flex-col gap-6 bg-[#0b0b0b] p-8 h-full justify-between rounded-3xl ring-1 ring-indigo-500/30"
           >
-            <h2 className="text-xl uppercase mb-2">Project Inquiry</h2>
+            <h2 className="text-xl uppercase mb-2 font-semibold">Send Us a Message</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col w-full">
-                <label className="text-sm mb-1">Your Name</label>
-                <input name="name" value={formData.name} onChange={handleChange} type="text" className="p-3 bg-base-100 text-white border border-white w-full placeholder-gray-400" placeholder="Your Name" required />
+                <label className="text-sm mb-1">Full Name</label>
+                <input name="name" value={formData.name} onChange={handleChange} type="text" className="p-3 bg-base-100 text-white border border-indigo-500/50 rounded-md placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g., John Doe" required />
               </div>
               <div className="flex flex-col w-full">
-                <label className="text-sm mb-1">Your Phone</label>
-                <input name="phone" value={formData.phone} onChange={handleChange} type="text" className="p-3 bg-base-100 text-white border border-white w-full placeholder-gray-400" placeholder="Your Phone" required />
-              </div>
-              <div className="flex flex-col w-full">
-                <label className="text-sm mb-1">Your Email</label>
-                <input name="email" value={formData.email} onChange={handleChange} type="email" className="p-3 bg-base-100 text-white border border-white w-full placeholder-gray-400" placeholder="Your Email" required />
-              </div>
-              <div className="flex flex-col w-full">
-                <label className="text-sm mb-1">Budget</label>
-                <input name="budget" value={formData.budget} onChange={handleChange} type="text" className="p-3 bg-base-100 text-white border border-white w-full placeholder-gray-400" placeholder="$2000" required />
+                <label className="text-sm mb-1">Phone Number</label>
+                <input name="phone" value={formData.phone} onChange={handleChange} type="tel" className="p-3 bg-base-100 text-white border border-indigo-500/50 rounded-md placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="(555) 123-4567" required />
               </div>
               <div className="flex flex-col w-full md:col-span-2">
-                <label className="text-sm mb-1">Choose Service</label>
-                <input name="service" value={formData.service} onChange={handleChange} type="text" className="p-3 bg-base-100 text-white border border-white w-full placeholder-gray-400" placeholder="Choose Service" required />
+                <label className="text-sm mb-1">Email Address</label>
+                <input name="email" value={formData.email} onChange={handleChange} type="email" className="p-3 bg-base-100 text-white border border-indigo-500/50 rounded-md placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="you@example.com" required />
+              </div>
+              <div className="flex flex-col w-full md:col-span-2">
+                <label className="text-sm mb-1">How can we help?</label>
+                <input name="service" value={formData.service} onChange={handleChange} type="text" className="p-3 bg-base-100 text-white border border-indigo-500/50 rounded-md placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g., General Question, Support" required />
               </div>
             </div>
 
             <div className="flex flex-col w-full">
-              <label className="text-sm mb-1">Tell us about your project</label>
-              <textarea name="message" value={formData.message} onChange={handleChange} rows={6} className="w-full p-3 bg-base-100 text-white border border-white placeholder-gray-400" placeholder="Tell us about your project." required />
+              <label className="text-sm mb-1">Your Message</label>
+              <textarea name="message" value={formData.message} onChange={handleChange} rows={6} className="w-full p-3 bg-base-100 text-white border border-indigo-500/50 rounded-md placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Please provide some details..." required />
             </div>
 
-            <button type="submit" className="bg-white text-black py-4 text-sm font-semibold w-full">SEND A MESSAGE</button>
+            <button type="submit" className="rounded-md bg-indigo-600 px-3.5 py-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 w-full">Send Message</button>
             {status && <p className="text-sm text-center mt-2">{status}</p>}
           </motion.form>
         </div>

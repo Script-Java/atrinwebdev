@@ -2,9 +2,9 @@ import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const { name, email, message, phone, budget, service } = req.body;
+    const { name, email, message, phone, service } = req.body;
 
-    if (!name || !email || !message || !phone || !budget || !service) {
+    if (!name || !email || !message || !phone || !service) {
       return res.status(400).json({ error: "All fields are required." });
     }
 
@@ -25,7 +25,6 @@ export default async function handler(req, res) {
 Name: ${name}
 Email: ${email}
 Phone: ${phone}
-Budget: ${budget}
 Service: ${service}
 Message: ${message}
         `.trim(),

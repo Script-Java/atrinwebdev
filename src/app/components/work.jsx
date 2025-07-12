@@ -34,62 +34,86 @@ import web9 from "../assets/img/website/9.jpg";
 const websites = [
   {
     title: "Anubis Smoke Shop",
-    description: "Retail smoke shop offering a wide range of tobacco, vapes, glassware, and smoking accessories in a sleek, urban-themed layout.",
+    description:
+      "Retail smoke shop offering a wide range of tobacco, vapes, glassware, and smoking accessories in a sleek, urban-themed layout.",
     image: web1,
     link: "https://anubissmokeshop.com/",
   },
   {
     title: "Glass Go LLC",
-    description: "Auto glass repair and replacement company serving the Dallas area, specializing in windshield services and mobile installations.",
+    description:
+      "Auto glass repair and replacement company serving the Dallas area, specializing in windshield services and mobile installations.",
     image: web2,
     link: "https://www.glassgollc.com/",
   },
   {
     title: "Texas Five Star Paint & Body",
-    description: "Collision repair and auto body service provider focused on high-quality paint jobs, dent repairs, and insurance claims assistance.",
+    description:
+      "Collision repair and auto body service provider focused on high-quality paint jobs, dent repairs, and insurance claims assistance.",
     image: web3,
     link: "https://texasfivestarpaintandbody.com/",
   },
   {
     title: "Brilliance Skin",
-    description: "Skincare brand offering natural and rejuvenating products for all skin types, aimed at promoting confidence and radiant skin.",
+    description:
+      "Skincare brand offering natural and rejuvenating products for all skin types, aimed at promoting confidence and radiant skin.",
     image: web4,
     link: "https://www.brillianceskin.us/",
   },
   {
     title: "Bay Area Pa",
-    description: "Licensed public adjusters helping property owners handle insurance claims and maximize settlements after damage or loss.",
+    description:
+      "Licensed public adjusters helping property owners handle insurance claims and maximize settlements after damage or loss.",
     image: web5,
     link: "https://www.bayareapa.com/",
   },
   {
     title: "TFSM",
-    description: "Texas Five Star Marketing provides web development, SEO, and digital marketing solutions tailored for startups and small businesses.",
+    description:
+      "Texas Five Star Marketing provides web development, SEO, and digital marketing solutions tailored for startups and small businesses.",
     image: web6,
     link: "https://texasfivestarmarketing.com/",
   },
   {
     title: "DFW Glass Mart",
-    description: "Residential and commercial glass supplier offering window replacements, custom cuts, and mobile installation services in DFW.",
+    description:
+      "Residential and commercial glass supplier offering window replacements, custom cuts, and mobile installation services in DFW.",
     image: web7,
     link: "https://www.dfwglassmart.com/",
   },
   {
     title: "Glass Pros",
-    description: "Professional glass replacement company focused on auto glass services, including chip repairs, window replacements, and mobile support.",
+    description:
+      "Professional glass replacement company focused on auto glass services, including chip repairs, window replacements, and mobile support.",
     image: web8,
     link: "https://www.glassreplacementpros.com/",
   },
   {
     title: "Dallas Glass & Auto",
-    description: "Dallas-based glass repair company handling both auto and residential glass needs with fast service and expert craftsmanship.",
+    description:
+      "Dallas-based glass repair company handling both auto and residential glass needs with fast service and expert craftsmanship.",
     image: web9,
     link: "https://www.dallasglassandauto.com/",
   },
 ];
 
 const logos = [
-  logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8, logo9, logo10, logo11, logo12, logo13, logo14, logo15, logo17,
+  logo1,
+  logo2,
+  logo3,
+  logo4,
+  logo5,
+  logo6,
+  logo7,
+  logo8,
+  logo9,
+  logo10,
+  logo11,
+  logo12,
+  logo13,
+  logo14,
+  logo15,
+  logo17,
 ];
 
 export default function Work() {
@@ -103,15 +127,18 @@ export default function Work() {
           viewport={{ once: true }}
           className="relative max-w-screen-2xl mx-auto text-center px-4 z-10"
         >
-          <h1 className="text-3xl md:text-5xl font-semibold mb-4">
-            Our Creative Endeavors
+          <h2 className="text-base font-semibold leading-7 text-indigo-400 uppercase">Our Portfolio</h2>
+          <h1 className="mt-2 text-3xl md:text-5xl font-semibold mb-4">
+            Showcasing North Texas Success Stories
           </h1>
-          <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto">
-            We turn innovative ideas into tangible digital experiences. Explore a selection of our recent projects that showcase our dedication to design, functionality, and measurable impact.
+          <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto mt-6">
+            We're proud to partner with businesses in McKinney and the DFW area.
+            Explore our recent projects to see how we're helping our community's
+            brands shine online and achieve measurable growth.
           </p>
         </motion.div>
 
-        <div role="tablist" className="tabs tabs-bordered tabs-lg no-animation">
+        <div role="tablist" className="tabs tabs-bordered tabs-lg no-animation mt-12 text-indigo-400">
           <input
             type="radio"
             name="projects_tabs"
@@ -120,7 +147,10 @@ export default function Work() {
             className="tab uppercase tracking-wider text-sm border-none"
             defaultChecked
           />
-          <div role="tabpanel" className="tab-content border-t border-primary p-8">
+          <div
+            role="tabpanel"
+            className="tab-content border-t border-indigo-500 p-8"
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {websites.map((project, index) => (
                 <motion.div
@@ -129,20 +159,22 @@ export default function Work() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-[#0b0b0b] border border-primary p-6 transition hover:scale-[1.02]"
+                  className="bg-[#0b0b0b] p-6 transition hover:scale-[1.02] rounded-3xl ring-1 ring-indigo-500/50 hover:ring-indigo-500"
                 >
                   <Image
                     src={project.image}
                     alt={project.title}
                     width={400}
                     height={240}
-                    className="w-full h-48 object-cover mb-4"
+                    className="w-full h-48 object-cover mb-4 rounded-xl"
                   />
                   <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                  <p className="text-sm opacity-80 mb-4">{project.description}</p>
+                  <p className="text-sm opacity-80 mb-4">
+                    {project.description}
+                  </p>
                   <Link
                     href={project.link}
-                    className="text-white btn btn-outline text-sm font-semibold"
+                    className="mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 bg-white/10 text-white hover:bg-white/20 focus-visible:outline-white"
                     target="_blank"
                   >
                     View Website
@@ -159,7 +191,10 @@ export default function Work() {
             aria-label="Logos"
             className="tab uppercase tracking-wider text-sm border-none"
           />
-          <div role="tabpanel" className="tab-content border-t border-primary p-8">
+          <div
+            role="tabpanel"
+            className="tab-content border-t border-indigo-500 p-8"
+          >
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {logos.map((logo, index) => (
                 <motion.div
@@ -168,7 +203,7 @@ export default function Work() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
                   viewport={{ once: true }}
-                  className="flex items-center justify-center bg-[#0b0b0b] border border-primary p-4"
+                  className="flex items-center justify-center bg-[#0b0b0b] p-4 rounded-3xl ring-1 ring-indigo-500/50"
                 >
                   <Image
                     src={logo}
@@ -182,6 +217,11 @@ export default function Work() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="my-12 text-center">
+        <Link href={"/projects"} className="rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 uppercase">
+          View All Projects
+        </Link>
       </div>
     </section>
   );

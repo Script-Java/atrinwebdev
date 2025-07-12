@@ -38,7 +38,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="black">
+    <html lang="en" data-theme="black" suppressHydrationWarning>
       <body className={`${karla.variable} antialiased`}>{children}</body>
     </html>
   );
