@@ -10,33 +10,35 @@ import Footer from "../../components/footer";
 import { FiCode, FiTrendingUp, FiBriefcase, FiStar } from "react-icons/fi";
 
 export default function PlanoWebDevelopment() {
+    // Rewritten service descriptions for better SEO and local targeting
     const planoServices = [
         {
             icon: <FiCode size={24} />,
-            title: "Corporate & Small Business Websites",
-            description: "We design sophisticated, responsive websites that reflect the professionalism of your Plano-based business, from startups to corporate headquarters."
+            title: "Custom Plano Web Design",
+            description: "Your business is unique. We build custom websites for small businesses in Plano that capture your brand and stand out, from the Downtown Arts District to Legacy West."
         },
         {
             icon: <FiTrendingUp size={24} />,
-            title: "Local SEO for Plano",
-            description: "Dominate the competitive Plano market. We optimize your site to attract high-value customers, ensuring you're visible when they search for your services."
+            title: "Plano SEO Company Services",
+            description: "Don't get lost in the crowd. As a dedicated Plano SEO company, we help local customers find you first, driving real foot traffic and online sales."
         },
         {
             icon: <FiBriefcase size={24} />,
-            title: "E-Commerce & Retail Solutions",
-            description: "Launch a powerful online store tailored for the Plano retail scene. We build secure, scalable e-commerce platforms that drive sales."
+            title: "E-Commerce That Converts",
+            description: "Ready to sell online? We build powerful, easy-to-manage e-commerce websites that turn Plano browsers into loyal customers."
         },
         {
             icon: <FiStar size={24} />,
-            title: "Executive Branding",
-            description: "Establish a premium brand with a professional logo and a cohesive visual identity that resonates with the discerning Plano community."
+            title: "Local Web Developer in Plano, TX",
+            description: "Get a dedicated web developer in Plano, TX. We provide ongoing support and updates to ensure your website always performs at its best, helping you grow."
         }
     ];
 
+    // Rewritten benefits to address the target audience's pain points
     const benefits = [
-        { title: "Connect With a Thriving Economy", description: "A professional online presence helps you tap into the vibrant mix of families and Fortune 500 companies that call Plano home." },
-        { title: "Stand Out in a Corporate Hub", description: "From Legacy West to the corporate corridors, a strong website ensures you stand out from the competition and capture new opportunities." },
-        { title: "A True Local Partner", description: "We understand the North Texas market because we're part of it. Get personalized service from a team that's invested in your success." },
+        { title: "Stop Feeling Overwhelmed", description: "Technology shouldn't be a barrier to growth. We handle the complexities of web design so you can focus on running your business." },
+        { title: "Compete with the Best in Plano", description: "Whether you're near a corporate hub or in a historic neighborhood, a professional website levels the playing field and makes you look as good as the big guys." },
+        { title: "A Partner Invested in Your Success", description: "We're not just a vendor; we're your local digital partner. We succeed when you succeed, offering straightforward advice and real results." },
     ];
 
     return (
@@ -52,12 +54,12 @@ export default function PlanoWebDevelopment() {
                     viewport={{ once: true }}
                     className="text-center pt-16 pb-20"
                 >
-                    <h2 className="text-base font-semibold leading-7 text-indigo-400 uppercase">Web Development for Plano, TX</h2>
+                    <h2 className="text-base font-semibold leading-7 text-indigo-400 uppercase">Your Local Plano Web Design Partner</h2>
                     <h1 className="mt-2 text-4xl md:text-6xl font-semibold mb-4 uppercase tracking-wider">
-                        Serving Plano Businesses
+                        A Website That Works as Hard as You Do
                     </h1>
                     <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto mt-6">
-                        We provide tailored web development and digital marketing solutions to help businesses in Plano, Texas, thrive online.
+                        In a city as dynamic as Plano, your business deserves a website that captures attention and drives growth. Let's build an online presence that makes you proud.
                     </p>
                 </motion.div>
 
@@ -70,8 +72,8 @@ export default function PlanoWebDevelopment() {
                         viewport={{ once: true }}
                         className="text-center mb-12"
                     >
-                        <h2 className="text-3xl md:text-4xl font-semibold">Our Services for Plano</h2>
-                        <p className="text-gray-400 mt-4 max-w-2xl mx-auto">A complete suite of digital services to build and grow your local presence.</p>
+                        <h2 className="text-3xl md:text-4xl font-semibold">A Simple, Results-Focused Process</h2>
+                        <p className="text-gray-400 mt-4 max-w-2xl mx-auto">We offer clear solutions to help your Plano business thrive online. No jargon, just results.</p>
                     </motion.div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {planoServices.map((service, index) => (
@@ -102,8 +104,8 @@ export default function PlanoWebDevelopment() {
                         viewport={{ once: true }}
                         className="text-center mb-12"
                     >
-                        <h2 className="text-3xl md:text-4xl font-semibold">Why Invest in a Professional Website in Plano?</h2>
-                        <p className="text-gray-400 mt-4 max-w-2xl mx-auto">A strong digital presence is key to success in a dynamic and corporate community.</p>
+                        <h2 className="text-3xl md:text-4xl font-semibold">Finally, a Web Presence That Helps You Grow</h2>
+                        <p className="text-gray-400 mt-4 max-w-2xl mx-auto">Investing in a professional website for your small business in Plano isn't an expense—it's your greatest asset.</p>
                     </motion.div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {benefits.map((benefit, index) => (
@@ -130,11 +132,11 @@ export default function PlanoWebDevelopment() {
                     viewport={{ once: true }}
                     className="text-center py-20"
                 >
-                    <h2 className="text-3xl md:text-4xl font-semibold">Ready to Grow Your Business in Plano?</h2>
-                    <p className="text-gray-300 mt-4 max-w-xl mx-auto">Let's discuss how we can build a powerful online presence for your Plano-based business.</p>
+                    <h2 className="text-3xl md:text-4xl font-semibold">Ready to See What's Possible?</h2>
+                    <p className="text-gray-300 mt-4 max-w-xl mx-auto">Let's have a simple, no-pressure chat about your business goals. Your quote is free, and so is the advice.</p>
                     <div className="mt-8">
                         <Link href="/contact" className="rounded-md bg-indigo-600 px-8 py-4 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 uppercase">
-                            Get Your Free Quote
+                            Start the Conversation
                         </Link>
                     </div>
                 </motion.div>
