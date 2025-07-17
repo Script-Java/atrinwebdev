@@ -51,10 +51,11 @@ export default function Faq() {
         viewport={{ once: true }}
         className="max-w-screen-md mx-auto text-center mb-12"
       >
-        <h2 className="text-base font-semibold leading-7 text-indigo-400 uppercase">FAQ</h2>
-        <h1 className="mt-2 text-3xl md:text-5xl font-semibold mb-4">
+        {/* ACCESSIBILITY FIX: Changed h2 to a p and h1 to an h2 for correct semantic order */}
+        <p className="text-base font-semibold leading-7 text-indigo-400 uppercase">FAQ</p>
+        <h2 className="mt-2 text-3xl md:text-5xl font-semibold mb-4">
           Your Questions, Answered
-        </h1>
+        </h2>
         <p className="text-gray-400 text-lg mt-6">
           Straightforward answers for McKinney & DFW businesses ready to grow their online presence.
         </p>
@@ -70,17 +71,27 @@ export default function Faq() {
             viewport={{ once: true }}
             className="bg-[#0b0b0b] rounded-xl ring-1 ring-indigo-500/30"
           >
-            <div
-              className="flex justify-between items-center p-6 cursor-pointer"
+            {/* ACCESSIBILITY FIX: Changed the clickable div to a semantic <button> */}
+            <button
+              className="w-full flex justify-between items-center text-left p-6"
               onClick={() => handleToggle(idx)}
+              aria-expanded={openIndex === idx}
+              aria-controls={`faq-answer-${idx}`}
             >
+              {/* ACCESSIBILITY FIX: The h3 is now correctly nested under the h2 section title */}
               <h3 className="text-lg font-medium text-white">
                 {faq.question}
               </h3>
-              <RiArrowDownSLine className={`text-indigo-400 text-2xl transition-transform duration-300 ${openIndex === idx ? 'rotate-180' : ''}`} />
-            </div>
+              <RiArrowDownSLine 
+                className={`text-indigo-400 text-2xl transition-transform duration-300 flex-shrink-0 ${openIndex === idx ? 'rotate-180' : ''}`} 
+                aria-hidden="true" 
+              />
+            </button>
             {openIndex === idx && (
               <motion.div
+                id={`faq-answer-${idx}`}
+                role="region"
+                aria-labelledby={`faq-question-${idx}`}
                 initial={{ height: 0, opacity: 0, marginTop: 0 }}
                 animate={{ height: 'auto', opacity: 1, marginTop: '-1rem' }}
                 exit={{ height: 0, opacity: 0, marginTop: 0 }}
