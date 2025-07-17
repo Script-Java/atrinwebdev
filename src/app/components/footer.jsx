@@ -59,10 +59,10 @@ export default function Footer() {
         >
           <h3 className="text-sm font-semibold uppercase mb-4">Follow Us</h3>
           <div className="flex gap-4">
-            <Link href="https://www.instagram.com/atrinwebdev/" target="_blank" className="text-white hover:text-gray-400">
+            <Link href="https://www.instagram.com/atrinwebdev/" target="_blank" className="text-white hover:text-gray-400" aria-label="Visit our Instagram page">
               <FaInstagram className="text-xl" />
             </Link>
-            <Link href="https://www.facebook.com/profile.php?id=61571846047410" target="_blank" className="text-white hover:text-gray-400">
+            <Link href="https://www.facebook.com/profile.php?id=61571846047410" target="_blank" className="text-white hover:text-gray-400" aria-label="Visit our Facebook page">
               <FaFacebookF className="text-xl" />
             </Link>
           </div>

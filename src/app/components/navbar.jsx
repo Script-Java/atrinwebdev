@@ -44,6 +44,7 @@ const Navbar = () => {
     { name: "Our Mission", href: "/about", type: 'link' },
     { name: "Pricing", href: "/pricing", type: 'link' },
     { name: "FAQ", href: "/faq", type: 'link' },
+    { name: "Careers", href: "/careers", type: 'link' },
     { name: "Blog", href: "/blog", type: 'link' }, // Added Blog link
   ];
 
