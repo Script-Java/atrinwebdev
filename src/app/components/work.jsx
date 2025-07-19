@@ -48,140 +48,132 @@ const websites = [
 const logos = [ logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8, logo9, logo10, logo11, logo12, logo13, logo14, logo15, logo17 ];
 
 export default function Work() {
-  // ACCESSIBILITY FIX: Use state to manage the active tab, defaulting to 'websites'
-  const [activeTab, setActiveTab] = useState("websites");
+    // State to manage the active tab, defaulting to 'websites'
+    const [activeTab, setActiveTab] = useState("websites");
 
-  return (
-    <section className="py-20 px-6 bg-base-100 text-white" id="projects">
-      <div className="max-w-screen-2xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="relative max-w-screen-2xl mx-auto text-center px-4 z-10"
-        >
-          {/* ACCESSIBILITY FIX: Swapped h1 and h2 for correct semantic order */}
-          <h1 className="text-base font-semibold leading-7 text-indigo-400 uppercase">Our Portfolio</h1>
-          <h2 className="mt-2 text-3xl md:text-5xl font-semibold mb-4">
-            Showcasing North Texas Success Stories
-          </h2>
-          <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto mt-6">
-            We're proud to partner with businesses in McKinney and the DFW area.
-            Explore our recent projects to see how we're helping our community's
-            brands shine online and achieve measurable growth.
-          </p>
-        </motion.div>
-
-        {/* ACCESSIBILITY FIX: Replaced radio inputs with semantic buttons for tabs */}
-        <div role="tablist" aria-label="Portfolio Categories" className="tabs tabs-bordered tabs-lg no-animation mt-12 text-indigo-400">
-          <button
-            id="tab-websites"
-            role="tab"
-            aria-controls="panel-websites"
-            aria-selected={activeTab === "websites"}
-            onClick={() => setActiveTab("websites")}
-            className={`tab uppercase tracking-wider text-sm border-none ${activeTab === 'websites' ? 'tab-active' : ''}`}
-            tabIndex={activeTab === 'websites' ? 0 : -1}
-          >
-            Websites
-          </button>
-          <button
-            id="tab-logos"
-            role="tab"
-            aria-controls="panel-logos"
-            aria-selected={activeTab === "logos"}
-            onClick={() => setActiveTab("logos")}
-            className={`tab uppercase tracking-wider text-sm border-none ${activeTab === 'logos' ? 'tab-active' : ''}`}
-            tabIndex={activeTab === 'logos' ? 0 : -1}
-          >
-            Logos
-          </button>
-        </div>
-
-        {/* Conditionally rendered tab panels based on state */}
-        <div>
-          {/* Websites Panel */}
-          {activeTab === 'websites' && (
-            <div
-              id="panel-websites"
-              role="tabpanel"
-              aria-labelledby="tab-websites"
-              className="tab-content border-t border-indigo-500 p-8"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {websites.map((project, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 30 }}
+    return (
+        <section className="py-20 px-6 bg-base-100 text-white" id="projects">
+            <div className="max-w-screen-2xl mx-auto">
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    transition={{ duration: 0.6 }}
                     viewport={{ once: true }}
-                    className="bg-[#0b0b0b] p-6 transition hover:scale-[1.02] rounded-3xl ring-1 ring-indigo-500/50 hover:ring-indigo-500"
-                  >
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      width={400}
-                      height={240}
-                      className="w-full h-48 object-cover mb-4 rounded-xl"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                    <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                    <p className="text-sm opacity-80 mb-4">
-                      {project.description}
+                    className="relative max-w-screen-2xl mx-auto text-center px-4 z-10"
+                >
+                    <h1 className="text-base font-semibold leading-7 text-indigo-400 uppercase">Our Portfolio</h1>
+                    <h2 className="mt-2 text-3xl md:text-5xl font-semibold mb-4">
+                        Showcasing North Texas Success Stories
+                    </h2>
+                    <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto mt-6">
+                        We're proud to partner with businesses in McKinney and the DFW area.
+                        Explore our recent projects to see how we're helping our community's
+                        brands shine online and achieve measurable growth.
                     </p>
-                    <Link
-                      href={project.link}
-                      className="mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 bg-white/10 text-white hover:bg-white/20 focus-visible:outline-white"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Website
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          )}
+                </motion.div>
 
-          {/* Logos Panel */}
-          {activeTab === 'logos' && (
-            <div
-              id="panel-logos"
-              role="tabpanel"
-              aria-labelledby="tab-logos"
-              className="tab-content border-t border-indigo-500 p-8"
-            >
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {logos.map((logo, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4, delay: index * 0.05 }}
-                    viewport={{ once: true }}
-                    className="flex items-center justify-center bg-[#0b0b0b] p-4 rounded-3xl ring-1 ring-indigo-500/50"
-                  >
-                    <Image
-                      src={logo}
-                      alt={`Logo ${index + 1}`}
-                      width={200}
-                      height={200}
-                      className="object-contain"
-                    />
-                  </motion.div>
-                ))}
-              </div>
+                {/* Tab Controls: Using buttons for better accessibility and state management */}
+                <div role="tablist" className="tabs tabs-bordered justify-center tabs-lg mt-12 mb-4">
+                    <button
+                        id="tab-websites"
+                        role="tab"
+                        aria-controls="panel-websites"
+                        aria-selected={activeTab === "websites"}
+                        onClick={() => setActiveTab("websites")}
+                        className={`tab uppercase tracking-wider text-sm font-semibold ${activeTab === 'websites' ? 'tab-active text-indigo-400' : 'text-gray-400'}`}
+                    >
+                        Websites
+                    </button>
+                    <button
+                        id="tab-logos"
+                        role="tab"
+                        aria-controls="panel-logos"
+                        aria-selected={activeTab === "logos"}
+                        onClick={() => setActiveTab("logos")}
+                        className={`tab uppercase tracking-wider text-sm font-semibold ${activeTab === 'logos' ? 'tab-active text-indigo-400' : 'text-gray-400'}`}
+                    >
+                        Logos
+                    </button>
+                </div>
+
+                {/* Conditionally rendered tab panels based on activeTab state */}
+                <div className="min-h-[500px]">
+                    {/* Websites Panel */}
+                    <div
+                        id="panel-websites"
+                        role="tabpanel"
+                        aria-labelledby="tab-websites"
+                        className={`tab-content p-4 transition-opacity duration-500 ${activeTab === 'websites' ? 'opacity-100 block' : 'opacity-0 hidden'}`}
+                    >
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {websites.map((project, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    className="bg-[#0b0b0b] p-6 transition hover:scale-[1.02] rounded-3xl ring-1 ring-indigo-500/50 hover:ring-indigo-500"
+                                >
+                                    <Image
+                                        src={project.image}
+                                        alt={project.title}
+                                        width={400}
+                                        height={240}
+                                        className="w-full h-48 object-cover mb-4 rounded-xl"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    />
+                                    <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+                                    <p className="text-sm opacity-80 mb-4 min-h-[60px]">
+                                        {project.description}
+                                    </p>
+                                    <Link
+                                        href={project.link}
+                                        className="mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 bg-white/10 text-white hover:bg-white/20 focus-visible:outline-white"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        View Website
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Logos Panel */}
+                    <div
+                        id="panel-logos"
+                        role="tabpanel"
+                        aria-labelledby="tab-logos"
+                        className={`tab-content p-4 transition-opacity duration-500 ${activeTab === 'logos' ? 'opacity-100 block' : 'opacity-0 hidden'}`}
+                    >
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                            {logos.map((logoSrc, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                                    className="flex items-center justify-center bg-[#0b0b0b] p-4 rounded-3xl ring-1 ring-indigo-500/50 aspect-square"
+                                >
+                                    <Image
+                                        src={logoSrc}
+                                        alt={`Logo ${index + 1}`}
+                                        width={200}
+                                        height={200}
+                                        className="object-contain"
+                                    />
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="my-12 text-center">
+                    <Link href={"/projects"} className="rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 uppercase">
+                        View All Projects
+                    </Link>
+                </div>
             </div>
-          )}
-        </div>
-      </div>
-      <div className="my-12 text-center">
-        <Link href={"/projects"} className="rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 uppercase">
-          View All Projects
-        </Link>
-      </div>
-    </section>
-  );
+        </section>
+    );
 }
