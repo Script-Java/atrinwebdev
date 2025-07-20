@@ -80,9 +80,9 @@ export default function Contact() {
             {[{
               icon: <FaWhatsapp className="text-indigo-400 text-2xl" />, title: "Chat on WhatsApp", description: "Have a quick question? Send us a message for a fast response.", button: "Start a Chat", link: "https://api.whatsapp.com/send/?phone=14699013579&text&type=phone_number&app_absent=0"
             }, {
-              icon: <FaEnvelope className="text-indigo-400 text-2xl" />, title: "Send an Email", description: "Prefer email? Send us your project details and we'll get back to you promptly.", button: "Email Us", link: "mailto:atrindev@gmail.com"
+              icon: <FaEnvelope className="text-indigo-400 text-2xl" />, title: "Send an Email", description: "Prefer email? Send us your project details and we'll get back to you promptly.", button: "Email Us", link: "mailto:info@atrinwebdev.com"
             }, {
-              icon: <FaCalendarAlt className="text-indigo-400 text-2xl" />, title: "Book a Discovery Call", description: "Schedule a complimentary call to discuss your project goals in detail.", button: "Schedule Now", link: "https://calendar.app.google/aCBkFPwuvuttZrFV6"
+              icon: <FaCalendarAlt className="text-indigo-400 text-2xl" />, title: "Book a Discovery Call", description: "Schedule a complimentary call to discuss your project goals in detail.", button: "Schedule Now", link: "https://calendar.app.google/G9XbaJhPBDoidcuMA"
             }].map((card, idx) => (
               <motion.div
                 key={idx}

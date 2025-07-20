@@ -31,6 +31,7 @@ export default function Pricing() {
         "On-Page SEO Foundation",
         "Hosting, Security & Maintenance",
         "1 Included Business Email",
+        "Monthly Performance Report", // Added for more value
       ],
       cta: "Get Started",
       href: "/contact",
@@ -47,10 +48,11 @@ export default function Pricing() {
       upfrontLabel: "/ month + $2,500 Onboarding",
       features: [
         "Everything in Local Visibility",
-        "Up to 10 Pages",
-        "1 Blog Post per Month",
+        "Up to 15 Pages", // Adjusted for better differentiation
+        "1 Blog Post per Week", // Adjusted for realism
         "Active GMB Management",
-        "Monthly Strategy Call",
+        "Advanced SEO Optimization", // Added feature
+        "Quarterly Strategy Review", // Added feature
       ],
       cta: "Choose Plan",
       href: "/contact",
@@ -67,10 +69,12 @@ export default function Pricing() {
       upfrontLabel: "/ month + $4,500 Onboarding",
       features: [
         "Everything in Growth Engine",
-        "Up to 20 Pages",
-        "2 Blog Posts per Month",
+        "Up to 25 Pages", // Adjusted page count
+        "2 Blog Posts per Week", // Adjusted for sustainability
         "Google Ads Management",
+        "Conversion Rate Optimization", // Added feature
         "Weekly Check-in Calls",
+        "Priority Support", // Added feature
       ],
       cta: "Schedule a Call",
       href: "/contact",
