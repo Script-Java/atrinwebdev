@@ -31,6 +31,7 @@ const Navbar = () => {
     { name: "SEO Optimization", href: "/services/seo-optimization" },
     { name: "Google Ads", href: "/services/google-ads" },
     { name: "Logo Design", href: "/services/logo-design" },
+    { name: "GMB Optimization", href: "/services/google-my-business-optimization" },
   ];
 
   const locations = [
@@ -38,6 +39,8 @@ const Navbar = () => {
     { name: "McKinney", href: "/locations/web-development-mckinney" },
     { name: "Frisco", href: "/locations/web-development-frisco" },
     { name: "Allen", href: "/locations/web-development-allen" },
+    { name: "Prosper", href: "/locations/web-development-prosper" },
+    { name: "Richardson", href: "/locations/web-development-richardson" },
   ];
   
   const aboutLinks = [

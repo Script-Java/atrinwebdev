@@ -5,7 +5,6 @@ import Work from "./components/work";
 import Contact from "./components/contact";
 import Footer from "./components/footer";
 import Faq from "./components/faq";
-import Pricing from "./components/pricing";
 
 export default function Home() {
   return (
@@ -14,7 +13,6 @@ export default function Home() {
       <Services />
       <Mission></Mission>
       <Work></Work>
-      <Pricing></Pricing>
       <Contact></Contact>
       <Faq></Faq>
       <Footer />

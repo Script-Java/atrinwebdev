@@ -7,6 +7,15 @@ import { motion } from "framer-motion";
 import logo from "../assets/logo/logo-white.png";
 
 export default function Footer() {
+  const areasServed = [
+    { name: "McKinney", href: "/locations/web-development-mckinney" },
+    { name: "Frisco", href: "/locations/web-development-frisco" },
+    { name: "Plano", href: "/locations/web-development-plano" },
+    { name: "Allen", href: "/locations/web-development-allen" },
+    { name: "Richardson", href: "/locations/web-development-richardson" },
+    { name: "Prosper", href: "/locations/web-development-prosper" },
+  ];
+
   return (
     <motion.footer
       initial={{ opacity: 0, y: 50 }}
@@ -15,7 +24,7 @@ export default function Footer() {
       viewport={{ once: true }}
       className="bg-[#0b0b0b] text-white py-16 px-6"
     >
-      <div className="max-w-screen-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+      <div className="max-w-screen-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         {/* Logo and Description */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
@@ -35,7 +44,7 @@ export default function Footer() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
           viewport={{ once: true }}
           className="flex flex-col"
         >
@@ -45,7 +54,25 @@ export default function Footer() {
             <li><Link href="/#solutions">Solutions</Link></li>
             <li><Link href="/#mission">Mission</Link></li>
             <li><Link href="/#projects">Projects</Link></li>
-            <li><Link href="/#contact">Contact Us</Link></li>
+            <li><Link href="/contact">Contact Us</Link></li>
+          </ul>
+        </motion.div>
+
+        {/* Areas Served */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="flex flex-col"
+        >
+          <h3 className="text-sm font-semibold uppercase mb-4">Areas Served</h3>
+          <ul className="space-y-2 text-sm text-gray-400">
+            {areasServed.map((area) => (
+              <li key={area.name}>
+                <Link href={area.href}>{area.name}</Link>
+              </li>
+            ))}
           </ul>
         </motion.div>
 
@@ -53,7 +80,7 @@ export default function Footer() {
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true }}
           className="flex flex-col"
         >

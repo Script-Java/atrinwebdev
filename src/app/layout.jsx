@@ -9,28 +9,28 @@ const karla = Karla({
 });
 
 export const metadata = {
-  // New title is location-specific and service-focused
+  // Title now leads with "North Dallas" as the primary keyword
   title:
-    "McKinney & Frisco Web Design | Local SEO for North Dallas | AtrinWebDev",
+    "North Dallas Web Design & SEO | Serving Frisco & McKinney | AtrinWebDev",
 
-  // New description is benefit-driven and targets a local audience
+  // Description is now more focused on the entire North Dallas region
   description:
-    "Elevate your North Dallas business with custom web design and local SEO services. AtrinWebDev helps McKinney and Frisco small businesses attract more customers and drive growth.",
+    "Expert web design and local SEO for businesses across North Dallas. AtrinWebDev creates high-performance websites for small businesses in Frisco, McKinney, and the greater DFW area to drive growth.",
 
-  // New keywords include local and long-tail terms
+  // Keywords are reordered to prioritize North Dallas terms
   keywords:
-    "McKinney web design, Frisco SEO services, North Dallas web development, small business website Texas, local SEO company, WordPress developer DFW, custom web design",
+    "North Dallas web design, North Dallas SEO, Frisco web design, McKinney web development, small business websites North Dallas, DFW web design company, local SEO company",
 
   authors: [{ name: "Atrin Shahroudi", url: "https://atrinwebdev.com" }],
 
   robots: "index, follow",
 
-  // OpenGraph data updated to match the new, optimized title and description
+  // OpenGraph data is updated to reflect the North Dallas focus
   openGraph: {
     title:
-      "McKinney & Frisco Web Design | Local SEO for North Dallas | AtrinWebDev",
+      "North Dallas Web Design & SEO | Serving Frisco & McKinney | AtrinWebDev",
     description:
-      "Custom web design and local SEO solutions designed to help small businesses in McKinney, Frisco, and the DFW area thrive online.",
+      "Specializing in custom websites and local SEO to help small businesses across North Dallas, Frisco, and McKinney succeed online.",
     url: "https://atrinwebdev.com",
     siteName: "AtrinWebDev",
     images: [
@@ -45,6 +45,7 @@ export const metadata = {
     type: "website",
   },
 };
+
 
 export default function RootLayout({ children }) {
   const schema = {

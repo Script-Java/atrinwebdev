@@ -27,11 +27,11 @@ export default function Pricing() {
       upfrontLabel: "12-Month Term",
       features: [
         "Up to 5-Page Website",
-        "Google Business Profile Setup",
+        "Basic GMB Setup",
         "On-Page SEO Foundation",
         "Hosting, Security & Maintenance",
         "1 Included Business Email",
-        "Monthly Performance Report", // Added for more value
+        "Monthly Performance Report",
       ],
       cta: "Get Started",
       href: "/contact",
@@ -48,11 +48,13 @@ export default function Pricing() {
       upfrontLabel: "/ month + $2,500 Onboarding",
       features: [
         "Everything in Local Visibility",
-        "Up to 15 Pages", // Adjusted for better differentiation
-        "1 Blog Post per Week", // Adjusted for realism
+        "Up to 20 Pages",
+        "1 Blog Post per Week",
         "Active GMB Management",
-        "Advanced SEO Optimization", // Added feature
-        "Quarterly Strategy Review", // Added feature
+        "Monthly SEO Optimization",
+        "Advanced GMB Optimization",
+        "Monthly Content Updates",
+        "Quarterly Strategy Review",
       ],
       cta: "Choose Plan",
       href: "/contact",
@@ -69,12 +71,12 @@ export default function Pricing() {
       upfrontLabel: "/ month + $4,500 Onboarding",
       features: [
         "Everything in Growth Engine",
-        "Up to 25 Pages", // Adjusted page count
-        "2 Blog Posts per Week", // Adjusted for sustainability
+        "Up to 50 Pages",
+        "2 Blog Posts per Week",
         "Google Ads Management",
-        "Conversion Rate Optimization", // Added feature
+        "Conversion Rate Optimization",
         "Weekly Check-in Calls",
-        "Priority Support", // Added feature
+        "Priority Support",
       ],
       cta: "Schedule a Call",
       href: "/contact",
