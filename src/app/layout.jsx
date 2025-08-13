@@ -1,5 +1,6 @@
 import { Karla } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 
 // Import Karla font
 const karla = Karla({
@@ -172,8 +173,11 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
+
       </head>
-      <body className={`${karla.variable} antialiased`}>{children}</body>
+      
+      <body className={`${karla.variable} antialiased`}>{children}
+      </body>
     </html>
   );
 }
