@@ -1,6 +1,6 @@
 import { Karla } from "next/font/google";
 import "./globals.css";
-import Script from "next/script";
+import SalesChatBubble from "./components/salesChatBubble";
 
 // Import Karla font
 const karla = Karla({
@@ -177,6 +177,7 @@ export default function RootLayout({ children }) {
       </head>
       
       <body className={`${karla.variable} antialiased`}>{children}
+        <SalesChatBubble />
       </body>
     </html>
   );

@@ -1,0 +1,102 @@
+[
+  {
+    "id": "overview",
+    "title": "Overview",
+    "text": "Premier Web Design & SEO is a McKinney-based studio serving North Texas businesses. We deliver fast, secure, SEO-optimized websites and marketing strategies that convert. Our mission: provide enterprise-level sites and measurable results—without the overhead of a big agency."
+  },
+  {
+    "id": "approach",
+    "title": "Our Approach",
+    "text": "We blend local market knowledge with modern stacks like Next.js and Tailwind CSS. SEO is built in from day one, Core Web Vitals are prioritized, and accessibility is standard. We implement E-E-A-T signals—bios, sources, policies—to build trust, and design mobile-first UX that drives frictionless conversions."
+  },
+  {
+    "id": "metrics",
+    "title": "Performance Metrics",
+    "text": "Average client outcomes: +125% organic traffic within 6–12 months, LCP under 2.5s at launch, 95% retention after 12 months, and A+ accessibility audits. (Results vary by category and baseline.)"
+  },
+  {
+    "id": "service-area",
+    "title": "Service Area",
+    "text": "We serve McKinney, Frisco, Allen, Plano, Prosper, and greater Dallas–Fort Worth—offering local expertise and faster cycles for North Texas businesses."
+  },
+  {
+    "id": "process",
+    "title": "Our Process",
+    "text": "1) Discover: goals, audience, positioning, features, success metrics, budget, timeline. 2) Design & Build: UX flows, wireframes, visual design, performance-first development, SEO + content baked in. 3) Launch & Grow: QA, launch checklist, analytics setup, training, plus ongoing CRO, SEO, and updates."
+  },
+  {
+    "id": "journey",
+    "title": "Our Journey",
+    "text": "2022: Founded in McKinney to bring enterprise-grade web + SEO to SMBs. 2023: Hit 50+ launches, scaled dev and SEO processes, formalized local SEO playbooks. 2024: Expanded into brand identity and PPC to accelerate client demand."
+  },
+  {
+    "id": "industries",
+    "title": "Industries Served",
+    "text": "We specialize in home services, professional services, healthcare, fitness, hospitality, and local retail—tailoring each strategy to the market."
+  },
+  {
+    "id": "support",
+    "title": "Ongoing Support",
+    "text": "Flexible care plans cover updates, hosting, SEO, content, and PPC. Always month-to-month, with clear deliverables."
+  },
+  {
+    "id": "pricing-launchpad",
+    "title": "Launch Pad Plan",
+    "text": "$289/month. Perfect for new businesses ready to get online fast. Results: live site in 2–3 weeks, appear in Google Maps, capture leads from day one. Includes up to 5 pages, GBP setup, on-page SEO foundation, hosting/security/maintenance, 1 business email, and monthly performance reporting. 90-day growth guarantee."
+  },
+  {
+    "id": "pricing-leadmachine",
+    "title": "Lead Machine Plan",
+    "text": "$709/month or $499/month + $2,500 onboarding. Best for growing businesses needing consistent traffic + leads. Results: 10–15 new leads/month, top 3 local keyword rankings in ~6 months. Includes Launch Pad features plus 20 pages, 1 blog/week, active GBP management, ongoing SEO, advanced optimization, content updates, and quarterly reviews. 90-day growth guarantee."
+  },
+  {
+    "id": "pricing-marketdominator",
+    "title": "Market Dominator Plan",
+    "text": "$1,375/month or $999/month + $4,500 onboarding. Best for market leaders aiming to dominate fast. Results: 2–3x qualified leads in 3–6 months, outrank competitors, higher conversions. Includes Lead Machine features plus 50 pages, 2 blogs/week, Google Ads, CRO, weekly check-ins, and priority support. 90-day growth guarantee."
+  },
+  {
+    "id": "why-not-freelancer",
+    "title": "Why Not a Freelancer",
+    "text": "One-time builds go stale. We continuously optimize SEO, content, and Google Business Profiles so your rankings, leads, and growth keep compounding."
+  },
+  {
+    "id": "plan-includes",
+    "title": "Included in Every Plan",
+    "text": "Security-hardened hosting & SSL, 2-day support SLA, Core Web Vitals + accessibility, search-ready structure + schema, GA4 + GSC setup, reusable design components, 99.9% uptime, secure payments."
+  },
+  {
+    "id": "bolt-ons",
+    "title": "Optional Add-Ons",
+    "text": "Care Plan: updates, monitoring, backups, support. Content Pack: SEO pages + blogs. PPC Starter: search/PMax campaigns + 30-day optimization. Local SEO: GBP optimization, citations, review engine."
+  },
+  {
+    "id": "bundles",
+    "title": "Example Bundles",
+    "text": "Growth + Care Plan: predictable updates. Scale + PPC Starter: faster pipeline while SEO ramps. Starter + Local SEO: dominate Google Maps."
+  },
+  {
+    "id": "onboarding",
+    "title": "Onboarding & Launch",
+    "text": "Kickoff call to define goals + metrics, technical audit, project brief, site map, and analytics baseline. Build phase: UX/UI design, Next.js + Tailwind dev, SEO foundations. Pre-launch QA, 301s, analytics verification, and a CRO sprint post-launch."
+  },
+  {
+    "id": "faqs",
+    "title": "FAQs",
+    "text": "Industries: home services, professional services, healthcare, fitness, hospitality, retail. Scoping: discovery + fixed-scope proposal. Support: flexible care plans. Payments: cards or ACH, milestone options. Migration: full URL mapping, 301s, analytics preservation. Content/images: provided or co-created."
+  },
+  {
+    "id": "cta",
+    "title": "Call to Action",
+    "text": "Book a discovery call to map ROI and timelines. Get a free homepage speed + SEO audit. Choose flexible monthly or upfront plans—no long-term lock-ins."
+  },
+  {
+    "id": "lead-capture-policy",
+    "title": "Lead Capture Policy",
+    "text": "The assistant cannot collect personal details directly from chat messages. To share contact information, the user must click the “Leave details” button in the chat and submit the form. The form fields (name, email, phone, message) are sent securely to our team. If a user types contact info in chat, the assistant must remind them to use the “Leave details” form to proceed."
+  },
+  {
+    "id": "answering-policy",
+    "title": "Answering Rules",
+    "text": "Do not guess or make assumptions. If the knowledge base does not include an answer, say you don’t know and offer to connect the user with a human. Use only the information provided in this knowledge base. If a question requires specific pricing, timelines, or guarantees not listed here, state that you don’t have that information and propose next steps (e.g., book a discovery call or leave details)."
+  }
+]

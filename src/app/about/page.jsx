@@ -288,20 +288,6 @@ export default function AboutPage() {
             </div>
           </section>
 
-          {/* Timeline */}
-          <section className="py-10">
-            <h2 className="text-3xl md:text-4xl font-semibold text-center mb-8">Our Journey</h2>
-            <div className="relative border-l border-indigo-500/20 pl-6 space-y-6">
-              {timeline.map((t, i) => (
-                <div key={i} className="relative">
-                  <span className="absolute -left-2 top-1 h-3 w-3 rounded-full bg-indigo-500"></span>
-                  <h4 className="text-lg font-semibold">{t.year} — {t.title}</h4>
-                  <p className="text-gray-400 text-sm mt-1">{t.text}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
           {/* FAQs */}
           <section className="py-16">
             <h2 className="text-3xl md:text-4xl font-semibold text-center mb-8">FAQs</h2>
