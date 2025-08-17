@@ -10,33 +10,22 @@ const karla = Karla({
 });
 
 export const metadata = {
-  // Title now leads with "North Dallas" as the primary keyword
-  title:
-    "North Dallas Web Design & SEO | Serving Frisco & McKinney | AtrinWebDev",
-
-  // Description is now more focused on the entire North Dallas region
+  title: "North Dallas Web Design & SEO | Frisco & McKinney Experts",
   description:
-    "Expert web design and local SEO for businesses across North Dallas. AtrinWebDev creates high-performance websites for small businesses in Frisco, McKinney, and the greater DFW area to drive growth.",
-
-  // Keywords are reordered to prioritize North Dallas terms
+    "Expert web design & local SEO in North Dallas. AtrinWebDev builds high-performance websites for small businesses in Frisco, McKinney & DFW.",
   keywords:
     "North Dallas web design, North Dallas SEO, Frisco web design, McKinney web development, small business websites North Dallas, DFW web design company, local SEO company",
-
   authors: [{ name: "Atrin Shahroudi", url: "https://atrinwebdev.com" }],
-
   robots: "index, follow",
-
-  // OpenGraph data is updated to reflect the North Dallas focus
   openGraph: {
-    title:
-      "North Dallas Web Design & SEO | Serving Frisco & McKinney | AtrinWebDev",
+    title: "North Dallas Web Design & SEO | Frisco & McKinney Experts",
     description:
       "Specializing in custom websites and local SEO to help small businesses across North Dallas, Frisco, and McKinney succeed online.",
-    url: "https://atrinwebdev.com",
+    url: "https://www.atrinwebdev.com",
     siteName: "AtrinWebDev",
     images: [
       {
-        url: "https://atrinwebdev.com/starsBg.jpg", // Use a specific, compelling image URL
+        url: "https://www.atrinwebdev.com/starsBg.jpg",
         width: 1200,
         height: 630,
         alt: "AtrinWebDev - Web Design & SEO for North Dallas Businesses",
@@ -46,7 +35,6 @@ export const metadata = {
     type: "website",
   },
 };
-
 
 export default function RootLayout({ children }) {
   const schema = {
@@ -109,26 +97,11 @@ export default function RootLayout({ children }) {
           url: "https://www.atrinwebdev.com/about",
         },
         areaServed: [
-          {
-            "@type": "City",
-            name: "McKinney",
-          },
-          {
-            "@type": "City",
-            name: "Frisco",
-          },
-          {
-            "@type": "City",
-            name: "Plano",
-          },
-          {
-            "@type": "City",
-            name: "Allen",
-          },
-          {
-            "@type": "AdministrativeArea",
-            name: "North Dallas",
-          },
+          { "@type": "City", name: "McKinney" },
+          { "@type": "City", name: "Frisco" },
+          { "@type": "City", name: "Plano" },
+          { "@type": "City", name: "Allen" },
+          { "@type": "AdministrativeArea", name: "North Dallas" },
         ],
         sameAs: [
           "https://www.facebook.com/atrinwebdev",
@@ -139,27 +112,9 @@ export default function RootLayout({ children }) {
           "@type": "OfferCatalog",
           name: "Digital Services",
           itemListElement: [
-            {
-              "@type": "Offer",
-              itemOffered: {
-                "@type": "Service",
-                name: "Local Visibility Plan",
-              },
-            },
-            {
-              "@type": "Offer",
-              itemOffered: {
-                "@type": "Service",
-                name: "Growth Engine Plan",
-              },
-            },
-            {
-              "@type": "Offer",
-              itemOffered: {
-                "@type": "Service",
-                name: "Market Accelerator Plan",
-              },
-            },
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Local Visibility Plan" } },
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Growth Engine Plan" } },
+            { "@type": "Offer", itemOffered: { "@type": "Service", name: "Market Accelerator Plan" } },
           ],
         },
       },
@@ -169,14 +124,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="black" suppressHydrationWarning>
       <head>
+        <link rel="canonical" href="https://www.atrinwebdev.com/" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
-
       </head>
-      
-      <body className={`${karla.variable} antialiased`}>{children}
+      <body className={`${karla.variable} antialiased`}>
+        {children}
         <SalesChatBubble />
       </body>
     </html>

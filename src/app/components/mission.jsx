@@ -139,9 +139,9 @@ export default function Mission() {
         viewport={{ once: true }}
         className="relative max-w-screen-2xl mx-auto text-center px-6 z-10"
       >
-        <h1 className="text-4xl md:text-5xl font-semibold mb-6 leading-tight">
+        <h2 className="text-4xl md:text-5xl font-semibold mb-6 leading-tight">
           Your Local Partner in Digital Growth
-        </h1>
+        </h2>
         <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto">
           Our mission is to empower businesses in McKinney and the North Dallas area with
           fast, secure websites and local SEO that compound into real revenue—backed by

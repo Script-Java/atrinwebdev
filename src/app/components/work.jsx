@@ -61,7 +61,7 @@ export default function Work() {
                     viewport={{ once: true }}
                     className="relative max-w-screen-2xl mx-auto text-center px-4 z-10"
                 >
-                    <h1 className="text-base font-semibold leading-7 text-indigo-400 uppercase">Our Portfolio</h1>
+                    <h2 className="text-base font-semibold leading-7 text-indigo-400 uppercase">Our Portfolio</h2>
                     <h2 className="mt-2 text-3xl md:text-5xl font-semibold mb-4">
                         Showcasing North Texas Success Stories
                     </h2>

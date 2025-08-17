@@ -193,9 +193,9 @@ export default function Services() {
           <h2 className="text-base font-semibold leading-7 text-indigo-400 uppercase">
             Our Solutions
           </h2>
-          <h1 className="mt-2 text-4xl md:text-6xl font-bold uppercase mb-6 tracking-wider">
+          <h2 className="mt-2 text-4xl md:text-6xl font-bold uppercase mb-6 tracking-wider">
             Services Built for Local Growth
-          </h1>
+          </h2>
         </motion.div>
 
         <motion.p
