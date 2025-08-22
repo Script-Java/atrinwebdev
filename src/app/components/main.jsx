@@ -1,56 +1,61 @@
 "use client";
 
-import Image from "next/image";
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
+import Navbar from "./navbar";
 
-// Static components that need to be there on initial load
-import Navbar from "./navbar"; 
-import bgImage from "../assets/img/hero.jpg";
-
-// OPTIMIZATION: Dynamically import the HeroContent component.
-// This tells Next.js to create a separate JavaScript chunk for HeroContent.
-// `ssr: false` ensures it's only rendered on the client-side, preventing framer-motion
-// from being included in the server-rendered HTML or the initial JS bundle.
+// Dynamically load HeroContent
 const DynamicHeroContent = dynamic(() => import("./heroContent"), {
-  ssr: false, 
-  // Optional: Add a loading skeleton to prevent layout shift
-  loading: () => <div className="h-[250px]" />, // Adjust height to match content
+  ssr: false,
+  loading: () => <div className="h-[250px]" />,
 });
 
-
 const Main = () => {
+  useEffect(() => {
+    if (!window.UnicornStudio) {
+      const script = document.createElement("script");
+      script.src =
+        "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js";
+      script.async = true;
+      script.onload = () => {
+        if (!window.UnicornStudio.isInitialized) {
+          window.UnicornStudio.init();
+          window.UnicornStudio.isInitialized = true;
+        }
+      };
+      document.body.appendChild(script);
+    }
+  }, []);
 
-  // This function is now passed as a prop to the dynamically loaded component.
   const scrollToSection = (id) => {
     const section = document.getElementById(id);
     if (section) {
-      const yOffset = -80; // Adjust for fixed navbar height
-      const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      const yOffset = -80;
+      const y =
+        section.getBoundingClientRect().top +
+        window.pageYOffset +
+        yOffset;
       window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
   return (
     <main className="relative w-full h-screen overflow-hidden" id="home">
-      {/* Background Image - remains the same */}
+      {/* Unicorn Studio background */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src={bgImage}
-          alt="Background Image of the Dallas skyline"
-          layout="fill"
-          objectFit="cover"
-          priority // Correctly used for LCP
-        />
+        <div
+          data-us-project="atM8kCW4NgCaunDOau8e"
+          style={{ width: "100%", height: "100%" }}
+        ></div>
       </div>
 
-      {/* Navbar - remains the same */}
+      {/* Navbar */}
       <div className="relative z-30">
         <Navbar />
       </div>
 
-      {/* Content Overlay */}
+      {/* Overlay Content */}
       <div className="absolute inset-0 z-20 bg-black bg-opacity-50 flex items-center justify-center">
-        {/* The dynamically loaded component is rendered here */}
         <DynamicHeroContent scrollToSection={scrollToSection} />
       </div>
     </main>
