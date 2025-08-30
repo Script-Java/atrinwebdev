@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import Navbar from "./navbar";
+import Silk from "./silk";
 
 // Dynamically load HeroContent
 const DynamicHeroContent = dynamic(() => import("./heroContent"), {
@@ -11,22 +11,6 @@ const DynamicHeroContent = dynamic(() => import("./heroContent"), {
 });
 
 const Main = () => {
-  useEffect(() => {
-    if (!window.UnicornStudio) {
-      const script = document.createElement("script");
-      script.src =
-        "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js";
-      script.async = true;
-      script.onload = () => {
-        if (!window.UnicornStudio.isInitialized) {
-          window.UnicornStudio.init();
-          window.UnicornStudio.isInitialized = true;
-        }
-      };
-      document.body.appendChild(script);
-    }
-  }, []);
-
   const scrollToSection = (id) => {
     const section = document.getElementById(id);
     if (section) {
@@ -41,12 +25,15 @@ const Main = () => {
 
   return (
     <main className="relative w-full h-screen overflow-hidden" id="home">
-      {/* Unicorn Studio background */}
+      {/* Silk background */}
       <div className="absolute inset-0 z-0">
-        <div
-          data-us-project="atM8kCW4NgCaunDOau8e"
-          style={{ width: "100%", height: "100%" }}
-        ></div>
+        <Silk
+          speed={5}
+          scale={1}
+          color="#818cf8"
+          noiseIntensity={1.5}
+          rotation={0}
+        />
       </div>
 
       {/* Navbar */}
