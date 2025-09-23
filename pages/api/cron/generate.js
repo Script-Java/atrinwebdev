@@ -1,8 +1,8 @@
 // pages/api/cron/generate.js
-import { chat } from "../../../lib/ai/chat";
-import { upsertFileInRepo } from "../../../lib/github";
-import { getNextTopic } from "../../../lib/topics";
-import { buildCoverSVG } from "../../../lib/cover";
+import { chat } from "@/lib/ai/chat";
+import { upsertFileInRepo } from "@/lib/github";
+import { getNextTopic } from "@/lib/topics";
+import { buildCoverSVG } from "@/lib/cover";
 import path from "path";
 import fs from "fs/promises";
 
