@@ -32,11 +32,11 @@ export default function Pricing() {
         description: "For new businesses who want a professional, search-ready online presence.",
         price: { term: 289 }, // only term option
         features: [
-          "Up to 5-Page Website",
+          "Up to 15-Page Website",
           "Google Business Profile Setup",
           "On-Page SEO Foundation",
           "Hosting, Security & Maintenance",
-          "1 Included Business Email",
+          "1 Included Business Email (optional)",
           "Monthly Performance Report",
         ],
         outcomes: [
@@ -47,58 +47,7 @@ export default function Pricing() {
         cta: "Get Started",
         href: "/contact",
         featured: false,
-      },
-      {
-        key: "lead",
-        name: "Lead Machine",
-        badge: "Most Popular",
-        tagline: "Turn traffic into a steady flow of leads.",
-        description: "For established businesses ready to consistently generate more traffic and leads.",
-        price: { term: 709, upfront: 499, onboarding: 2500 },
-        features: [
-          "Everything in Launch Pad",
-          "Up to 20 Pages",
-          "1 Blog Post per Week",
-          "Active GBP (GMB) Management",
-          "Monthly SEO Optimization",
-          "Advanced GBP Optimization",
-          "Monthly Content Updates",
-          "Quarterly Strategy Review",
-        ],
-        outcomes: [
-          "10–15+ new inbound leads / month",
-          "Top 3 ranking for core local keyword (~6 months)",
-          "Consistent content & reviews growth",
-        ],
-        cta: "Choose Plan",
-        href: "/contact",
-        featured: true,
-      },
-      {
-        key: "dominator",
-        name: "Market Dominator",
-        badge: "Best for Scaling",
-        tagline: "Dominate your local market and scale.",
-        description: "For serious businesses that want to dominate their market and grow rapidly.",
-        price: { term: 1375, upfront: 999, onboarding: 4500 },
-        features: [
-          "Everything in Lead Machine",
-          "Up to 50 Pages",
-          "2 Blog Posts per Week",
-          "Google Ads Campaign Management",
-          "Conversion Rate Optimization",
-          "Weekly Check-in Calls",
-          "Priority Support",
-        ],
-        outcomes: [
-          "2–3x more qualified leads in 3–6 months",
-          "Outrank competitors across channels",
-          "Higher conversion with CRO",
-        ],
-        cta: "Schedule a Call",
-        href: "/contact",
-        featured: false,
-      },
+      }
     ],
     []
   );
@@ -113,14 +62,7 @@ export default function Pricing() {
       >
         Pay Upfront
       </button>
-      <button
-        onClick={() => setIsTermPlan(true)}
-        className={`px-4 py-1.5 text-sm font-semibold rounded-full transition-colors duration-300 ${
-          isTermPlan ? "bg-indigo-600 text-white" : "hover:bg-gray-700/50"
-        }`}
-      >
-        12-Month Plan (Save on Upfront Costs)
-      </button>
+
     </div>
   );
 
