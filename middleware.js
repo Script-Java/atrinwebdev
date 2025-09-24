@@ -5,6 +5,9 @@ import { getToken } from "next-auth/jwt";
 export const config = { matcher: ["/:path*"] };
 
 export async function middleware(req) {
+    if (req.method === "OPTIONS") {
+    return NextResponse.next();
+  }
   const url = req.nextUrl.clone();
   const path = url.pathname;
   const host = req.headers.get("host") || "";
