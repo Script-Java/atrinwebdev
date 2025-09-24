@@ -1,4 +1,4 @@
-// middleware.js
+// middleware.js (root)
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
@@ -11,7 +11,6 @@ export async function middleware(req) {
   const isDev = process.env.NODE_ENV !== "production";
   const isCRMSub = host.startsWith("crm.");
 
-  // Public/static
   const isStatic =
     path.startsWith("/_next/") ||
     path.startsWith("/favicon") ||
@@ -20,7 +19,6 @@ export async function middleware(req) {
   const isSignin = path === "/signin";
 
   if (isDev) {
-    // Protect path-based CRM + its APIs in dev
     if (path.startsWith("/crm") || path.startsWith("/api/crm") || path.startsWith("/api/admin")) {
       const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
       if (!token) {
@@ -32,9 +30,6 @@ export async function middleware(req) {
     return NextResponse.next();
   }
 
-  // PROD
-
-  // Force apex /signin or /crm/* to the CRM subdomain
   if (!isCRMSub && (isSignin || path.startsWith("/crm"))) {
     const dest = new URL(path + url.search, `https://crm.${host.replace(/^www\./, "")}`);
     return NextResponse.redirect(dest);
@@ -42,13 +37,11 @@ export async function middleware(req) {
 
   if (isStatic || isAuthRoute) return NextResponse.next();
 
-  // On CRM subdomain, rewrite ONLY "/" -> "/crm" (do NOT touch /api/*)
   if (isCRMSub && path === "/") {
     url.pathname = "/crm";
     return NextResponse.rewrite(url);
   }
 
-  // Require auth for CRM pages & CRM/Admin APIs on CRM subdomain
   if (isCRMSub && (path.startsWith("/crm") || path.startsWith("/api/crm") || path.startsWith("/api/admin"))) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (!token) {

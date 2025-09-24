@@ -11,8 +11,7 @@ const GH = {
   branch: process.env.GITHUB_BRANCH || "main",
 };
 
-const USE_GITHUB =
-  !!(process.env.VERCEL && GH.token && GH.owner && GH.repo);
+const USE_GITHUB = !!(process.env.VERCEL && GH.token && GH.owner && GH.repo);
 
 function safeParse(json, fallback) {
   try {
@@ -44,9 +43,7 @@ async function readFromGitHub(filePath) {
   }
 
   const json = await res.json();
-  const content = Buffer.from(json.content || "", "base64").toString(
-    "utf8"
-  );
+  const content = Buffer.from(json.content || "", "base64").toString("utf8");
   return { content, sha: json.sha };
 }
 
