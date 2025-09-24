@@ -2,53 +2,61 @@
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-// Exclude API & static from middleware entirely
+// Run on everything EXCEPT: /api/*, Next static, favicon, and common asset types
 export const config = {
   matcher: [
-    // run on everything except: api, _next/static, _next/image, favicon, assets
-    "/((?!api/|_next/|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|css|js|map|woff2?|ttf|eot)).*)",
+    "/((?!api/|_next/|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|css|js|map|woff2?|ttf|eot|txt|xml)).*)",
   ],
 };
 
 export async function middleware(req) {
-  const url = req.nextUrl.clone();
+  const { nextUrl, headers, method } = req;
+  const url = nextUrl.clone();
   const path = url.pathname;
-  const host = req.headers.get("host") || "";
+
+  const host = headers.get("host") ?? "";
   const isDev = process.env.NODE_ENV !== "production";
   const isCRMSub = host.startsWith("crm.");
+  const rootHost = host.replace(/^crm\./, "").replace(/^www\./, "");
   const isSignin = path === "/signin";
 
-  // DEV: protect /crm pages locally
+  // No-op for preflight (harmless, but avoids surprises)
+  if (method === "OPTIONS") return NextResponse.next();
+
+  /* ---------------- DEV ---------------- */
   if (isDev) {
+    // Lock down /crm pages locally (APIs are protected inside their handlers)
     if (path.startsWith("/crm")) {
       const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
       if (!token) {
         const signin = new URL("/signin", req.url);
-        signin.searchParams.set("callbackUrl", `${req.nextUrl.origin}${path}${url.search}`);
+        signin.searchParams.set("callbackUrl", `${nextUrl.origin}${path}${url.search}`);
         return NextResponse.redirect(signin);
       }
     }
     return NextResponse.next();
   }
 
-  // PROD: move /signin and /crm* to CRM subdomain
+  /* --------------- PROD ---------------- */
+
+  // Keep /crm* and /signin ONLY on crm subdomain
   if (!isCRMSub && (isSignin || path.startsWith("/crm"))) {
-    const dest = new URL(path + url.search, `https://crm.${host.replace(/^www\./, "")}`);
+    const dest = new URL(path + url.search, `https://crm.${rootHost}`);
     return NextResponse.redirect(dest);
   }
 
-  // On crm subdomain, rewrite "/" → "/crm"
+  // On crm subdomain, show /crm when hitting the bare "/"
   if (isCRMSub && path === "/") {
     url.pathname = "/crm";
     return NextResponse.rewrite(url);
   }
 
-  // On crm subdomain, protect /crm pages
+  // On crm subdomain, require auth for /crm pages
   if (isCRMSub && path.startsWith("/crm")) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (!token) {
-      const signin = new URL("/signin", `${url.protocol}//${host}`);
-      signin.searchParams.set("callbackUrl", `${url.protocol}//${host}${path}${url.search}`);
+      const signin = new URL("/signin", `https://crm.${rootHost}`);
+      signin.searchParams.set("callbackUrl", `https://crm.${rootHost}${path}${url.search}`);
       return NextResponse.redirect(signin);
     }
   }
