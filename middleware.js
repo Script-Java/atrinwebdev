@@ -2,13 +2,13 @@
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-// ✅ Do NOT run middleware on /api/*, /_next/*, /static/*, favicon.ico
+// ✅ Do NOT run on /api/* or assets
 export const config = {
   matcher: ["/((?!api/|_next/|static/|favicon\\.ico).*)"],
 };
 
 export async function middleware(req) {
-  // ✅ Always let preflight OPTIONS pass
+  // ✅ Always let preflight pass
   if (req.method === "OPTIONS") return NextResponse.next();
 
   const url = req.nextUrl.clone();
@@ -16,12 +16,9 @@ export async function middleware(req) {
   const host = req.headers.get("host") || "";
   const isDev = process.env.NODE_ENV !== "production";
   const isCRMSub = host.startsWith("crm.");
-
   const isSignin = path === "/signin";
 
-  // -------------------------
-  // DEV: protect /crm pages only (APIs are excluded by matcher)
-  // -------------------------
+  // ---------------- DEV: protect CRM pages only ----------------
   if (isDev) {
     if (path.startsWith("/crm")) {
       const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -34,9 +31,7 @@ export async function middleware(req) {
     return NextResponse.next();
   }
 
-  // -------------------------
-  // PROD rules
-  // -------------------------
+  // ---------------- PROD rules ----------------
 
   // 1) Force /signin and /crm pages to the crm. subdomain
   if (!isCRMSub && (isSignin || path.startsWith("/crm"))) {
