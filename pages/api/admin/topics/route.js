@@ -36,13 +36,15 @@ export async function POST(req) {
     return noCache(NextResponse.json({ error: "Forbidden" }, { status: 403 }));
   }
   let body;
-  try { body = await req.json(); } catch { 
+  try { body = await req.json(); } catch {
     return noCache(NextResponse.json({ error: "Invalid JSON body" }, { status: 400 }));
   }
   const topic = (body?.topic || "").trim();
   if (!topic) return noCache(NextResponse.json({ error: "Invalid topic" }, { status: 400 }));
+
   const r = await addTopic(topic);
   if (!r?.ok) return noCache(NextResponse.json({ error: r.error || "Add failed" }, { status: 400 }));
+
   const topics = await getTopics();
   return noCache(NextResponse.json({ ok: true, topics }, { status: 201 }));
 }

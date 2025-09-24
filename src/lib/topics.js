@@ -1,12 +1,11 @@
 // src/lib/topics.js
 import { neon } from "@neondatabase/serverless";
 
-// DATABASE_URL must include sslmode=require on Neon
 const sql = neon(process.env.DATABASE_URL);
 
-// return topics ordered by position asc
+// Return array of strings (titles) in order
 export async function getTopics() {
-  const rows = await sql/*sql*/`select id, title, position from "Topic" order by position asc`;
+  const rows = await sql/*sql*/`select title from "Topic" order by position asc`;
   return rows.map(r => r.title);
 }
 
@@ -23,21 +22,12 @@ export async function deleteTopic(index) {
   const i = Number(index);
   if (!Number.isInteger(i) || i < 0) return { ok: false, error: "Bad index" };
 
-  // find id at that position
-  const rows = await sql/*sql*/`select id from "Topic" where position = ${i}`;
-  if (rows.length === 0) return { ok: false, error: "Out of range" };
+  const row = await sql/*sql*/`select id from "Topic" where position = ${i}`;
+  if (row.length === 0) return { ok: false, error: "Out of range" };
 
-  const id = rows[0].id;
-
-  // delete it
+  const id = row[0].id;
   await sql/*sql*/`delete from "Topic" where id = ${id}`;
-
-  // shift down positions above i
-  await sql/*sql*/`
-    update "Topic"
-       set position = position - 1
-     where position > ${i};
-  `;
+  await sql/*sql*/`update "Topic" set position = position - 1 where position > ${i}`;
   return { ok: true };
 }
 
@@ -49,12 +39,10 @@ export async function moveTopic(fromIndex, toIndex) {
   }
   if (from === to) return { ok: true };
 
-  // grab id of the item at `from`
   const rows = await sql/*sql*/`select id from "Topic" where position = ${from}`;
   if (rows.length === 0) return { ok: false, error: "Out of range" };
   const id = rows[0].id;
 
-  // make room at `to` then plug `id` there
   if (to > from) {
     await sql/*sql*/`
       update "Topic"
@@ -72,16 +60,12 @@ export async function moveTopic(fromIndex, toIndex) {
   return { ok: true };
 }
 
-// Pop first topic (position 0) and renumber others.
-// Returns the consumed title or null.
+// Consume first topic (position 0) and renumber
 export async function getNextTopic() {
   const first = await sql/*sql*/`select id, title from "Topic" where position = 0`;
   if (first.length === 0) return null;
   const { id, title } = first[0];
-
-  // delete it
   await sql/*sql*/`delete from "Topic" where id = ${id}`;
-  // shift all remaining down by 1
   await sql/*sql*/`update "Topic" set position = position - 1`;
   return title;
 }

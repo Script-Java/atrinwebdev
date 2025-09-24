@@ -2,7 +2,13 @@
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-export const config = { matcher: ["/:path*"] };
+// Exclude API & static from middleware entirely
+export const config = {
+  matcher: [
+    // run on everything except: api, _next/static, _next/image, favicon, assets
+    "/((?!api/|_next/|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico|css|js|map|woff2?|ttf|eot)).*)",
+  ],
+};
 
 export async function middleware(req) {
   const url = req.nextUrl.clone();
@@ -10,17 +16,9 @@ export async function middleware(req) {
   const host = req.headers.get("host") || "";
   const isDev = process.env.NODE_ENV !== "production";
   const isCRMSub = host.startsWith("crm.");
+  const isSignin = path === "/signin";
 
-  const isStatic =
-    path.startsWith("/_next/") ||
-    path.startsWith("/favicon") ||
-    /\.(?:png|jpg|jpeg|gif|svg|webp|ico|css|js|map|woff2?|ttf|eot)$/.test(path);
-
-  // Never touch any API route
-  if (path.startsWith("/api/")) return NextResponse.next();
-  if (isStatic) return NextResponse.next();
-
-  // Dev: protect /crm pages locally
+  // DEV: protect /crm pages locally
   if (isDev) {
     if (path.startsWith("/crm")) {
       const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -33,20 +31,19 @@ export async function middleware(req) {
     return NextResponse.next();
   }
 
-  // Prod: force /signin and /crm* to crm subdomain
-  const isSignin = path === "/signin";
+  // PROD: move /signin and /crm* to CRM subdomain
   if (!isCRMSub && (isSignin || path.startsWith("/crm"))) {
     const dest = new URL(path + url.search, `https://crm.${host.replace(/^www\./, "")}`);
     return NextResponse.redirect(dest);
   }
 
-  // On crm subdomain, rewrite "/" -> "/crm"
+  // On crm subdomain, rewrite "/" → "/crm"
   if (isCRMSub && path === "/") {
     url.pathname = "/crm";
     return NextResponse.rewrite(url);
   }
 
-  // On crm subdomain, protect /crm pages (not APIs)
+  // On crm subdomain, protect /crm pages
   if (isCRMSub && path.startsWith("/crm")) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (!token) {
