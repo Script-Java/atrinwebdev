@@ -1,6 +1,6 @@
 // src/app/signin/page.jsx
 import { Suspense } from "react";
-import SignInClient from "./SignInClient";
+import SignInClient from "./signinclient";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
