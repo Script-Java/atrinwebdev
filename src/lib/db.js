@@ -1,7 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+// src/lib/db.js
+import { neon } from "@neondatabase/serverless";
 
-const g = globalThis;
-export const prisma = g.prisma ?? new PrismaClient({
-  log: process.env.NODE_ENV === "development" ? ["query","error","warn"] : ["error"],
-});
-if (process.env.NODE_ENV !== "production") g.prisma = prisma;
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is required (include sslmode=require for Neon).");
+}
+
+export const sql = neon(process.env.DATABASE_URL);

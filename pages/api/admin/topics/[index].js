@@ -1,6 +1,6 @@
 // pages/api/admin/topics/[index].js
 import { getToken } from "next-auth/jwt";
-import * as Topics from "@/lib/topics";
+import { deleteTopic, moveTopic, getTopics } from "@/lib/topics";
 
 function noCache(res) {
   res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
@@ -26,9 +26,9 @@ export default async function handler(req, res) {
   }
 
   if (req.method === "DELETE") {
-    const r = await Topics.deleteTopic(idx);
+    const r = await deleteTopic(idx);
     if (!r?.ok) return res.status(400).json({ error: r?.error || "Delete failed" });
-    const topics = await Topics.getTopics();
+    const topics = await getTopics();
     return res.status(200).json({ ok: true, topics });
   }
 
@@ -36,9 +36,9 @@ export default async function handler(req, res) {
     const { toIndex } = req.body || {};
     const to = Number(toIndex);
     if (!Number.isInteger(to) || to < 0) return res.status(400).json({ error: "Invalid toIndex" });
-    const r = await Topics.moveTopic(idx, to);
+    const r = await moveTopic(idx, to);
     if (!r?.ok) return res.status(400).json({ error: r?.error || "Move failed" });
-    const topics = await Topics.getTopics();
+    const topics = await getTopics();
     return res.status(200).json({ ok: true, topics });
   }
 
