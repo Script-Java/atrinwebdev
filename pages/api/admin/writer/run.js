@@ -1,3 +1,6 @@
+// pages/api/admin/writer/run.js
+export const config = { runtime: "nodejs" }; // avoid Edge; we import fs/path locally
+
 import { getToken } from "next-auth/jwt";
 import path from "path";
 import fs from "fs/promises";
@@ -10,7 +13,27 @@ import { createRun, makeLogger, finishRun } from "@/lib/writer-logger";
 const CONTENT_DIR = process.env.CONTENT_DIR || "src/content";
 
 function slugify(s) {
-  return s.toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-").replace(/-+/g, "-").slice(0, 80);
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .slice(0, 80);
+}
+
+// more tolerant JSON parser (handles code fences / extra prose)
+function parseJsonLoose(raw) {
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch {}
+  const m =
+    raw.match(/```json\s*([\s\S]*?)```/i) ||
+    raw.match(/\{[\s\S]*\}$/);
+  if (m) {
+    const s = Array.isArray(m) ? (m[1] || m[0]) : m;
+    try { return JSON.parse(s); } catch {}
+  }
+  return null;
 }
 
 async function fileExists(relPath) {
@@ -25,6 +48,7 @@ async function fileExists(relPath) {
         Accept: "application/vnd.github+json",
         "User-Agent": "blog-writer-bot",
       },
+      cache: "no-store",
     });
     return res.ok;
   }
@@ -52,27 +76,33 @@ export default async function handler(req, res) {
     const topic = (await getNextTopic()) || "Next.js on Vercel best practices";
     await logger.info("topic", `Topic selected: ${topic}`);
 
-    // 2) Meta
+    // 2) Meta (STRICT JSON ONLY)
     await logger.info("meta", "Requesting title/description/tags from Groq…");
-    const metaJson = await chat([
-      { role: "system", content: "You are an expert tech blogger for web developers." },
-      { role: "user", content:
-`Return JSON with keys: title, description (<=150 chars), tags[] (3-6).
-Topic: "${topic}"
-Constraints:
-- Title must be concise and compelling.
-- Description must be plain text, <=150 chars.` }
-    ], { temperature: 0.6 });
+    const metaRaw = await chat(
+      [
+        {
+          role: "system",
+          content:
+            "You are a strict JSON generator. Output ONLY a JSON object with keys: title, description, tags. " +
+            'No prose. No code fences. "description" <= 150 chars. "tags" length 3-6.',
+        },
+        {
+          role: "user",
+          content: `Topic: ${topic}\nReturn: {"title":"...","description":"...","tags":["...","..."]}`,
+        },
+      ],
+      { temperature: 0.2 }
+    );
 
     let title = topic, description = "A helpful post.", tags = ["webdev"];
-    try {
-      const parsed = JSON.parse(metaJson);
-      title = parsed?.title || title;
-      description = parsed?.description || description;
-      tags = Array.isArray(parsed?.tags) ? parsed.tags : tags;
+    const meta = parseJsonLoose(metaRaw);
+    if (meta) {
+      title = meta?.title || title;
+      description = meta?.description || description;
+      tags = Array.isArray(meta?.tags) ? meta.tags : tags;
       await logger.info("meta", "Meta parsed", { title, description, tags });
-    } catch (e) {
-      await logger.warn("meta", "Failed to parse JSON meta, using defaults", { raw: metaJson });
+    } else {
+      await logger.warn("meta", "Failed to parse JSON meta, using defaults", { raw: metaRaw });
     }
 
     const slug = slugify(title);
@@ -88,15 +118,21 @@ Constraints:
 
     // 4) Body
     await logger.info("body", "Requesting body markdown from Groq…");
-    const bodyMd = await chat([
-      { role: "system", content: "You are a meticulous technical writer." },
-      { role: "user", content:
-`Write a 1200-1600 word Markdown article.
-Title: ${title}
-Audience: professional web developers.
-Include: clear headings, actionable steps, code examples (JS/Next.js/SQL), "Key Takeaways" (4-6 bullets), conclusion.
-Do NOT add front-matter; only the body markdown.` }
-    ], { temperature: 0.7 });
+    const bodyMd = await chat(
+      [
+        { role: "system", content: "You are a meticulous technical writer." },
+        {
+          role: "user",
+          content:
+            `Write a 1200-1600 word Markdown article.\n` +
+            `Title: ${title}\nAudience: professional web developers.\n` +
+            `Include: clear headings, actionable steps, code examples (JS/Next.js/SQL), ` +
+            `"Key Takeaways" (4-6 bullets), conclusion.\n` +
+            `Do NOT add front-matter; only the body markdown.`,
+        },
+      ],
+      { temperature: 0.7 }
+    );
 
     // 5) Cover SVG
     await logger.info("cover", "Building SVG cover image…");
@@ -125,7 +161,7 @@ Do NOT add front-matter; only the body markdown.` }
       `date: "${today}"`,
       `description: "${description.replace(/"/g, '\\"')}"`,
       `image: "/images/posts/${slug}.svg"`,
-      `tags:${tags.map(t => `\n  - ${t}`).join("")}`,
+      `tags:${tags.map((t) => `\n  - ${t}`).join("")}`,
       "---",
       "",
     ].join("\n");
@@ -148,11 +184,26 @@ Do NOT add front-matter; only the body markdown.` }
 
     await finishRun(runId, "ok", { slug, path: mdRelPath, image: `/images/posts/${slug}.svg` });
     await logger.info("done", "Run finished successfully");
-
     return res.json({ ok: true, runId, slug, path: mdRelPath, image: `/images/posts/${slug}.svg`, logs: logger.buffer });
   } catch (e) {
-    await logger.error("error", String(e.message || e));
-    await finishRun(runId, "error", { error: String(e.message || e) });
-    return res.status(500).json({ ok: false, runId, error: String(e.message || e), logs: logger.buffer });
+    const msg = String(e?.message || e);
+    await logger.error("error", msg);
+
+    // Map common GitHub misconfig to helpful HTTP
+    if (msg.includes("GitHub is not configured")) {
+      await finishRun(runId, "error", { error: msg });
+      return res.status(501).json({ ok: false, runId, error: "GitHub not configured for prod environment" });
+    }
+    if (msg.includes("token lacks Contents write")) {
+      await finishRun(runId, "error", { error: msg });
+      return res.status(502).json({
+        ok: false,
+        runId,
+        error: "GitHub token has no write access. Grant Contents: Read & write, enable SSO if needed.",
+      });
+    }
+
+    await finishRun(runId, "error", { error: msg });
+    return res.status(500).json({ ok: false, runId, error: msg, logs: logger.buffer });
   }
 }

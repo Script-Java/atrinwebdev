@@ -4,17 +4,14 @@ import { neon } from "@neondatabase/serverless";
 const sql = neon(process.env.DATABASE_URL);
 
 export default async function handler(req, res) {
-  // 🔒 Admin-only
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   if (!token || token.role !== "admin") {
     return res.status(403).json({ error: "Forbidden" });
   }
-
   if (req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  // 🚫 Tell browser (and Vercel’s edge caches) not to cache
   res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
