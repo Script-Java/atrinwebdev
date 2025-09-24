@@ -62,7 +62,7 @@ export default function Contact() {
           className="text-center mb-16 px-4"
         >
           <h2 className="text-base font-semibold leading-7 text-indigo-400 uppercase">Contact Us</h2>
-          <h2 className="mt-2 text-3xl md:text-5xl font-semibold mb-4">Get In Touch</h2>
+          <h2 className="mt-2 text-3xl md:text-5xl font-semibold uppercase mb-4">Get In Touch</h2>
           <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto mt-6">
             Have a question or some feedback? We're here to help businesses in McKinney and North Dallas succeed online. Reach out today.
           </p>

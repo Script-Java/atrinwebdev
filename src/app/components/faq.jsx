@@ -53,7 +53,7 @@ export default function Faq() {
       >
         {/* ACCESSIBILITY FIX: Changed h2 to a p and h1 to an h2 for correct semantic order */}
         <p className="text-base font-semibold leading-7 text-indigo-400 uppercase">FAQ</p>
-        <h2 className="mt-2 text-3xl md:text-5xl font-semibold mb-4">
+        <h2 className="mt-2 text-3xl uppercase md:text-5xl font-semibold mb-4">
           Your Questions, Answered
         </h2>
         <p className="text-gray-400 text-lg mt-6">

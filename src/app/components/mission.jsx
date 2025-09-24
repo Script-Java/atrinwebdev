@@ -21,66 +21,12 @@ import {
 } from "react-icons/fi";
 
 export default function Mission() {
-  // ——— content config ———
-  const pillars = [
-    {
-      icon: <FiTarget className="text-indigo-400" size={22} />,
-      title: "Outcomes, Not Deliverables",
-      copy:
-        "Every project starts with business goals. We reverse‑engineer the design, SEO, and content to hit those targets.",
-      bullets: ["KPIs defined up front", "Roadmap with milestones", "Quarterly growth reviews"],
-    },
-    {
-      icon: <FiTrendingUp className="text-indigo-400" size={22} />,
-      title: "Performance by Default",
-      copy:
-        "Speed, accessibility, and Core Web Vitals are built in—not tacked on. Fast sites convert better and rank higher.",
-      bullets: ["INP < 200ms target", "LCP < 2.5s on mobile", "A11y best practices"],
-    },
-    {
-      icon: <FiMapPin className="text-indigo-400" size={22} />,
-      title: "Local Advantage",
-      copy:
-        "We’re embedded in North Dallas. That proximity gives you faster cycles, local insights, and real accountability.",
-      bullets: ["McKinney & North Dallas focus", "Neighborhood‑level SEO", "On‑site photos & content"],
-    },
-    {
-      icon: <FiShield className="text-indigo-400" size={22} />,
-      title: "Security & Peace of Mind",
-      copy:
-        "We host, secure, and maintain your stack so you can focus on growth—no midnight plugin panics.",
-      bullets: ["Managed updates", "Backups & monitoring", "Hardened hosting"],
-    },
-  ];
 
   const stats = [
     { label: "Avg. Page Speed Gain", value: "↑ 58%", sub: "post‑launch vs. legacy site" },
     { label: "Local Lead Lift", value: "2.4×", sub: "within first 90 days" },
     { label: "Client Retention", value: "96%", sub: "rolling 12‑month" },
     { label: "Projects Delivered", value: "10+", sub: "web & SEO engagements" },
-  ];
-
-  const steps = [
-    {
-      icon: <FiUsers size={20} className="text-indigo-300" />,
-      title: "01 — Discovery",
-      copy: "Stakeholder interviews, competitive scan, analytics baseline, KPI alignment.",
-    },
-    {
-      icon: <FiZap size={20} className="text-indigo-300" />,
-      title: "02 — Strategy",
-      copy: "Information architecture, messaging, local SEO plan, tech & hosting decisions.",
-    },
-    {
-      icon: <FiCheckCircle size={20} className="text-indigo-300" />,
-      title: "03 — Build & Optimize",
-      copy: "Design, dev, content, tracking. Ship fast, iterate faster with live data.",
-    },
-    {
-      icon: <FiClock size={20} className="text-indigo-300" />,
-      title: "04 — Grow",
-      copy: "Monthly improvements, CRO testing, content and backlink cadence.",
-    },
   ];
 
   // ——— JSON‑LD (helps About pages & local SEO) ———
@@ -139,7 +85,7 @@ export default function Mission() {
         viewport={{ once: true }}
         className="relative max-w-screen-2xl mx-auto text-center px-6 z-10"
       >
-        <h2 className="text-4xl md:text-5xl font-semibold mb-6 leading-tight">
+        <h2 className="text-4xl md:text-5xl font-semibold uppercase mb-6 leading-tight">
           Your Local Partner in Digital Growth
         </h2>
         <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto">
@@ -177,7 +123,7 @@ export default function Mission() {
           viewport={{ once: true }}
           className="space-y-6"
         >
-          <h2 className="text-2xl md:text-3xl font-bold">From Local Vision to Digital Reality</h2>
+          <h2 className="text-2xl md:text-3xl uppercase font-bold">From Local Vision to Digital Reality</h2>
           <p className="text-gray-300">
             We don’t just build websites; we create digital foundations for local success. We
             partner with McKinney‑area businesses to craft online experiences that perform,
@@ -235,119 +181,8 @@ export default function Mission() {
           viewport={{ once: true }}
           className="text-2xl md:text-3xl font-semibold text-center mb-10"
         >
-          What We Stand For
         </motion.h3>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {pillars.map((p, i) => (
-            <motion.article
-              key={i}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: i * 0.08 }}
-              viewport={{ once: true }}
-              className="bg-[#0b0b0b] p-6 rounded-2xl ring-1 ring-indigo-500/20"
-            >
-              <div className="flex items-center gap-3">
-                {p.icon}
-                <h4 className="font-semibold">{p.title}</h4>
-              </div>
-              <p className="text-sm text-gray-400 mt-3">{p.copy}</p>
-              <ul className="mt-4 space-y-2 text-xs text-gray-400 list-disc pl-5">
-                {p.bullets.map((b, idx) => (
-                  <li key={idx}>{b}</li>
-                ))}
-              </ul>
-            </motion.article>
-          ))}
-        </div>
       </div>
-
-      {/* Impact stats */}
-      <div className="max-w-screen-2xl mx-auto px-6 mt-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {stats.map((s, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 * i }}
-              viewport={{ once: true }}
-              className="rounded-2xl bg-[#0b0b0b] p-6 ring-1 ring-indigo-500/20 text-center"
-            >
-              <div className="text-3xl font-semibold text-indigo-300">{s.value}</div>
-              <div className="mt-1 text-xs uppercase tracking-wide text-gray-400">
-                {s.label}
-              </div>
-              <div className="text-[11px] text-gray-500 mt-1">{s.sub}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* Process */}
-      <div className="max-w-screen-2xl mx-auto px-6 mt-16">
-        <motion.h3
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-2xl md:text-3xl font-semibold text-center mb-10"
-        >
-          How We Work (Simple, Proven)
-        </motion.h3>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {steps.map((s, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.08 * i }}
-              viewport={{ once: true }}
-              className="bg-[#0b0b0b] p-6 rounded-2xl ring-1 ring-indigo-500/20"
-            >
-              <div className="flex items-center gap-2">{s.icon}<span className="text-sm font-semibold">{s.title}</span></div>
-              <p className="text-sm text-gray-400 mt-2">{s.copy}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-
-
-
-
-      {/* CTA ribbon */}
-      <motion.div
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        viewport={{ once: true }}
-        className="max-w-screen-2xl mx-auto px-6 mt-14"
-      >
-        <div className="bg-gradient-to-r from-indigo-600 to-indigo-500 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div>
-            <h3 className="text-xl md:text-2xl font-semibold">Ready to turn traffic into revenue?</h3>
-            <p className="text-indigo-100 text-sm mt-1">
-              Get a free homepage speed & SEO audit with prioritized fixes.
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/contact"
-              className="bg-white text-black px-5 py-2 rounded-md text-sm font-semibold hover:bg-white/90"
-            >
-              Book a Call
-            </Link>
-            <Link
-              href="/pricing"
-              className="border border-white/60 text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-white/10"
-            >
-              See Packages
-            </Link>
-          </div>
-        </div>
-      </motion.div>
     </section>
   );
 }

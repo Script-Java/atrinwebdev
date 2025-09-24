@@ -40,12 +40,10 @@ const websites = [
   { title: "Brilliance Skin", description: "Skincare brand offering natural and rejuvenating products for all skin types, aimed at promoting confidence and radiant skin.", image: web4, link: "https://www.brillianceskin.us/" },
   { title: "Bay Area Pa", description: "Licensed public adjusters helping property owners handle insurance claims and maximize settlements after damage or loss.", image: web5, link: "https://www.bayareapa.com/" },
   { title: "TFSM", description: "Texas Five Star Marketing provides web development, SEO, and digital marketing solutions tailored for startups and small businesses.", image: web6, link: "https://texasfivestarmarketing.com/" },
-  { title: "DFW Glass Mart", description: "Residential and commercial glass supplier offering window replacements, custom cuts, and mobile installation services in DFW.", image: web7, link: "https://www.dfwglassmart.com/" },
-  { title: "Glass Pros", description: "Professional glass replacement company focused on auto glass services, including chip repairs, window replacements, and mobile support.", image: web8, link: "https://www.glassreplacementpros.com/" },
-  { title: "Dallas Glass & Auto", description: "Dallas-based glass repair company handling both auto and residential glass needs with fast service and expert craftsmanship.", image: web9, link: "https://www.dallasglassandauto.com/" },
+  
 ];
 
-const logos = [ logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8, logo9, logo10, logo11, logo12, logo13, logo14, logo15, logo17 ];
+const logos = [ logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8, logo9, logo10, logo11, logo12];
 
 export default function Work() {
     // State to manage the active tab, defaulting to 'websites'
@@ -62,7 +60,7 @@ export default function Work() {
                     className="relative max-w-screen-2xl mx-auto text-center px-4 z-10"
                 >
                     <h2 className="text-base font-semibold leading-7 text-indigo-400 uppercase">Our Portfolio</h2>
-                    <h2 className="mt-2 text-3xl md:text-5xl font-semibold mb-4">
+                    <h2 className="mt-2 uppercase text-3xl md:text-5xl font-semibold mb-4">
                         Showcasing North Texas Success Stories
                     </h2>
                     <p className="text-gray-300 text-lg md:text-xl max-w-3xl mx-auto mt-6">

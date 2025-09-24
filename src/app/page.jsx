@@ -8,7 +8,7 @@ import Faq from "./components/faq";
 
 export default function Home() {
   return (
-    <div className="uppercase">
+    <div>
       <Main />
       <Services />
       <Mission></Mission>

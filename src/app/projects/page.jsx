@@ -24,6 +24,9 @@ import logo13 from "../assets/img/logos/13.png";
 import logo14 from "../assets/img/logos/14.png";
 import logo15 from "../assets/img/logos/15.png";
 import logo17 from "../assets/img/logos/17.png";
+import logo18 from "../assets/img/logos/18.png";
+import logo19 from "../assets/img/logos/19.png";
+import logo20 from "../assets/img/logos/20.png";
 
 import web1 from "../assets/img/website/1.jpg";
 import web2 from "../assets/img/website/2.jpg";
@@ -34,8 +37,26 @@ import web6 from "../assets/img/website/6.jpg";
 import web7 from "../assets/img/website/7.jpg";
 import web8 from "../assets/img/website/8.jpg";
 import web9 from "../assets/img/website/9.jpg";
+import web10 from "../assets/img/website/12.jpg";
+import web11 from "../assets/img/website/13.jpg";
 
 const allWebsites = [
+    {
+    title: "Falafel & Fin",
+    description:
+      "This isn't just falafel. It's a flavor explosion crafted from fresh chickpeas, hand-picked herbs, and a secret blend of Mediterranean spices, all fried to golden perfection. Get ready for the perfect crunch.",
+    image: web11,
+    link: "https://falafelandfin.com/",
+    tags: ["Next.Js", "Retail", "Restaurant"]
+  },
+    {
+    title: "Bonita Food Mart",
+    description:
+      "A commercial Next.Js website for a gas station and retail smoke shop. The site showcases a diverse inventory including fuel, tobacco, vapes, and glassware, all presented with a sleek, urban-themed design.",
+    image: web10,
+    link: "https://bonitafoodmart.com/",
+    tags: ["Next.Js", "Retail", "Food"]
+  },
   {
     title: "Anubis Smoke Shop",
     description:
@@ -115,7 +136,7 @@ const otherProjects = allWebsites.slice(1);
 
 const logos = [
   logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8,
-  logo9, logo10, logo11, logo12, logo13, logo14, logo15, logo17,
+  logo9, logo10, logo11, logo12, logo13, logo14, logo15, logo17, logo18, logo19
 ];
 
 

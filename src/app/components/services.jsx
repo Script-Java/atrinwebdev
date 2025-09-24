@@ -2,359 +2,251 @@
 
 import Link from "next/link";
 import Script from "next/script";
+import { motion } from "framer-motion";
 import {
   FaLaptopCode,
   FaSearch,
   FaGoogle,
   FaPalette,
   FaCheck,
-  FaChartLine,
-  FaClock,
-  FaShieldAlt,
+  FaUsers,
   FaMobileAlt,
   FaServer,
-  FaUsers,
+  FaChartLine,
 } from "react-icons/fa";
-import { motion } from "framer-motion";
 
-// Assuming you have this component in your project
 import ScrollingBar from "./scrollingBar";
 
+/* ----------------------------- Glass primitives ---------------------------- */
+function GlassCard({ className = "", children }) {
+  return (
+    <div
+      className={
+        "rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl " +
+        "shadow-[0_8px_30px_rgba(0,0,0,0.15)] " +
+        className
+      }
+    >
+      {children}
+    </div>
+  );
+}
+const fadeUp = (i = 0) => ({
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  transition: { duration: 0.45, delay: i * 0.08 },
+  viewport: { once: true, amount: 0.3 },
+});
+
+/* --------------------------------- Content -------------------------------- */
+const SERVICES = [
+  {
+    key: "web",
+    icon: <FaLaptopCode className="text-3xl md:text-4xl text-indigo-300" />,
+    title: "Custom Website Development",
+    desc:
+      "Fast, accessible sites built on modern stacks and tuned for Core Web Vitals. We plan information architecture, wireframes, and component systems that make content easy to manage and scale. Every page ships with clean semantics, image optimization, and caching so your site stays quick on mobile and desktop.",
+    bullets: ["Next.js / Headless WP", "UX & wireframes", "On-page SEO & schema", "WCAG-aware UI"],
+    cta: { href: "/web-design", label: "See Web Projects" },
+  },
+  {
+    key: "seo",
+    icon: <FaSearch className="text-3xl md:text-4xl text-indigo-300" />,
+    title: "Local SEO Strategy",
+    desc:
+      "Own your service area with technical fixes, content clusters, and GBP wins. We map search intent to pages, build topical depth, and strengthen E-E-A-T with reviews, citations, and local links. Technical audits clear crawl issues so you rank consistently and convert more high-intent visitors.",
+    bullets: ["Keyword & topic clusters", "Technical audits", "GBP optimization", "Reviews & citations"],
+    cta: { href: "/local-seo", label: "Explore Local SEO" },
+  },
+  {
+    key: "ppc",
+    icon: <FaGoogle className="text-3xl md:text-4xl text-indigo-300" />,
+    title: "PPC & Google Ads",
+    desc:
+      "Tightly-themed campaigns, negatives, and A/B tests to maximize ROAS. We pair compelling ad copy with high-converting landing pages, then iterate with call tracking and analytics. Budgets are protected with strong query filters and continuous testing so spend moves toward what actually drives leads.",
+    bullets: ["Search / PMax", "SKAG/SKSA", "Ad tests", "Call tracking"],
+    cta: { href: "/google-ads", label: "View Ad Plans" },
+  },
+  {
+    key: "brand",
+    icon: <FaPalette className="text-3xl md:text-4xl text-indigo-300" />,
+    title: "Brand & Logo Identity",
+    desc:
+      "Memorable, scalable identity systems that look sharp everywhere. We explore multiple directions, refine typography and color, and deliver an asset kit with usage rules so your brand stays consistent across print, web, and ads. The result is a clear visual voice that people remember.",
+    bullets: ["3–5 concepts", "Style guide", "Asset kit", "Usage rules"],
+    cta: { href: "/logo-design", label: "See Brand Work" },
+  },
+];
+
+const PROCESS = [
+  {
+    icon: <FaUsers />,
+    title: "Discover",
+    copy:
+      "Clarify goals, audience, and KPIs while auditing your current assets and competitors. We align scope and success metrics so every decision supports measurable outcomes.",
+  },
+  {
+    icon: <FaMobileAlt />,
+    title: "Design",
+    copy:
+      "Translate strategy into flows, wireframes, and UI. Content and visuals are built together, emphasizing clarity, accessibility, and clear calls to action across devices.",
+  },
+  {
+    icon: <FaServer />,
+    title: "Build",
+    copy:
+      "Implement with a modern stack, performance budgets, and QA across browsers. Analytics and event tracking are wired in from day one for clean, reliable data.",
+  },
+  {
+    icon: <FaChartLine />,
+    title: "Launch & Grow",
+    copy:
+      "Go live with a thorough checklist, then iterate. We monitor rankings, speed, and conversion, running CRO, SEO, and PPC adjustments to compound results over time.",
+  },
+];
+
 export default function Services() {
-  const services = [
-    {
-      key: "web",
-      icon: <FaLaptopCode className="text-5xl text-indigo-400 mb-4" />,
-      title: "Custom Website Development",
-      desc:
-        "Bespoke, high‑performance websites engineered to convert. Built on modern stacks, optimized for Core Web Vitals, accessibility, and SEO from day one.",
-      bullets: [
-        "Strategic UX flows & wireframes",
-        "Next.js / WordPress headless options",
-        "Schema, on‑page SEO & 301s",
-        "WCAG‑aware color/contrast",
-      ],
-      outcomes: [
-        "LCP ≤ 2.5s",
-        "INP ≤ 200ms",
-        "90+ Lighthouse",
-        "ADA‑minded",
-      ],
-      cta: { href: "/web-design", label: "See Web Projects" },
-    },
-    {
-      key: "seo",
-      icon: <FaSearch className="text-5xl text-indigo-400 mb-4" />,
-      title: "Local SEO Strategy",
-      desc:
-        "Own your service area. Technical fixes + content clusters + GBP optimization to boost Map Pack visibility and long‑tail intent.",
-      bullets: [
-        "Local keyword & topic clusters",
-        "Technical SEO audits & fixes",
-        "Google Business Profile optimization",
-        "Reviews & citations playbook",
-      ],
-      outcomes: ["Top‑3 Map Pack", "↑ Calls", "↑ Direction taps", "↑ Reviews"],
-      cta: { href: "/local-seo", label: "Explore Local SEO" },
-    },
-    {
-      key: "ppc",
-      icon: <FaGoogle className="text-5xl text-indigo-400 mb-4" />,
-      title: "PPC & Google Ads Management",
-      desc:
-        "Immediate pipeline lift with tightly‑themed campaigns, negative lists, and relentless A/B testing to maximize ROAS.",
-      bullets: [
-        "Search, Performance Max, Remarketing",
-        "Granular SKAG/SKSA structures",
-        "Ad copy & extensions testing",
-        "Call tracking & conversion setup",
-      ],
-      outcomes: ["↓ CPA", "↑ CVR", "↑ Quality Score", "ROAS‑focused"],
-      cta: { href: "/google-ads", label: "View Ad Plans" },
-    },
-    {
-      key: "brand",
-      icon: <FaPalette className="text-5xl text-indigo-400 mb-4" />,
-      title: "Brand & Logo Identity",
-      desc:
-        "Memorable, scalable identity systems—logo, type, color, and usage—that look sharp everywhere from vans to viewports.",
-      bullets: [
-        "3–5 custom concepts",
-        "Full brand style guide",
-        "Social & print asset kit",
-        "Usage do’s & don’ts",
-      ],
-      outcomes: ["↑ Recognition", "↑ Trust", "↑ Consistency", "Ready‑to‑ship"],
-      cta: { href: "/logo-design", label: "See Brand Work" },
-    },
-  ];
-
-  const process = [
-    {
-      icon: <FaUsers />,
-      title: "1) Discover",
-      copy:
-        "Kickoff workshop, goals, audiences, competitors, and success metrics. We align on scope, sitemap, and KPIs.",
-    },
-    {
-      icon: <FaMobileAlt />,
-      title: "2) Design",
-      copy:
-        "UX flows, wireframes, and high‑fidelity UI. Content guidance, accessibility and SEO baked into every screen.",
-    },
-    {
-      icon: <FaServer />,
-      title: "3) Build",
-      copy:
-        "Modern stack development, QA, analytics & tracking, schema, and performance hardening on staging.",
-    },
-    {
-      icon: <FaChartLine />,
-      title: "4) Launch & Grow",
-      copy:
-        "Go‑live checklist, monitoring, CRO tests, and monthly SEO/PPC iterations to keep compounding results.",
-    },
-  ];
-
-  const assurances = [
-    { icon: <FaClock />, label: "Fast Turnarounds" },
-    { icon: <FaShieldAlt />, label: "Secure & Backed Up" },
-  ];
-
-  // ——— JSON‑LD: Service catalog + FAQ teasers for richer snippets ———
   const serviceLd = {
     "@context": "https://schema.org",
     "@type": "Service",
     serviceType: "Web Design, Local SEO, PPC, Branding",
-    areaServed: { "@type": "Place", name: "McKinney, Frisco & North Dallas" },
-    provider: {
-      "@type": "Organization",
-      name: "atrinwebdev",
-      url: "https://www.atrinwebdev.com",
-    },
+    provider: { "@type": "Organization", name: "atrinwebdev", url: "https://www.atrinwebdev.com" },
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Digital Growth Services",
-      itemListElement: services.map((s) => ({
+      itemListElement: SERVICES.map((s) => ({
         "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: s.title,
-          description: s.desc,
-          areaServed: "United States",
-        },
+        itemOffered: { "@type": "Service", name: s.title, description: s.desc },
       })),
     },
   };
 
-  const faqLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "How long does a typical website take?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text:
-            "Most small business sites launch in 4–6 weeks depending on scope and content readiness. Larger builds may require phased releases.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Do you guarantee Core Web Vitals?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text:
-            "We engineer for LCP ≤ 2.5s, INP ≤ 200ms, and CLS ≤ 0.1 on production. Actual results vary by hosting, media weight, ads, and user device.",
-        },
-      },
-    ],
-  };
-
   return (
-    <section className="bg-black text-white py-20" id="solutions">
-      {/* Structured Data */}
+    <section id="solutions" className="bg-black text-white py-16 md:py-24">
       <Script id="services-ld" type="application/ld+json" strategy="afterInteractive">
         {JSON.stringify(serviceLd)}
       </Script>
-      <Script id="faq-ld" type="application/ld+json" strategy="afterInteractive">
-        {JSON.stringify(faqLd)}
-      </Script>
 
-      <div className="max-w-screen-2xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <h2 className="text-base font-semibold leading-7 text-indigo-400 uppercase">
-            Our Solutions
-          </h2>
-          <h2 className="mt-2 text-4xl md:text-6xl font-bold uppercase mb-6 tracking-wider">
-            Services Built for Local Growth
-          </h2>
+      <div className="mx-auto max-w-7xl px-4 md:px-6">
+        {/* Heading */}
+        <motion.div {...fadeUp()} className="text-center uppercase">
+          <p className="text-sm font-medium tracking-wide text-indigo-300/90">Our Solutions</p>
+          <h2 className="mt-2 text-3xl md:text-5xl font-semibold tracking-tight">Services built for local growth</h2>
+          <p className="mt-3 md:mt-4 text-base md:text-lg text-gray-300 max-w-3xl mx-auto">
+            From stunning web design to targeted SEO and PPC—everything you need to get found and convert.
+            We blend strategy, performance, and clean execution so your brand looks great and your pipeline stays full.
+          </p>
         </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="text-lg md:text-xl uppercase text-gray-400 text-center mb-16 max-w-3xl mx-auto"
-        >
-          From stunning web design to targeted SEO, we equip McKinney & North Dallas
-          businesses to stand out, get found, and convert.
-        </motion.p>
-
-        <div className="mb-12">
+        {/* Optional marquee */}
+        <div className="mt-8 md:mt-10">
           <ScrollingBar />
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {services.map((service, index) => (
-            <motion.div
-              key={service.key}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
-              viewport={{ once: true }}
-              className="bg-[#0b0b0b] border-t border-indigo-500/50 p-8 hover:border-indigo-500 transition-all duration-300 shadow-xl hover:shadow-indigo-500/10 rounded-2xl"
-            >
-              <div>{service.icon}</div>
-              <h2 className="text-2xl font-bold uppercase tracking-wide mb-4">
-                {service.title}
-              </h2>
-              <p className="text-gray-300 mb-6">{service.desc}</p>
+        {/* Services (equal-height glass cards) */}
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 items-stretch gap-5 md:gap-6">
+          {SERVICES.map((s, i) => (
+            <motion.div key={s.key} {...fadeUp(i)} className="h-full">
+              <GlassCard className="p-6 md:p-7 h-full min-h-[300px] md:min-h-[320px] flex flex-col">
+                <div className="flex items-start gap-4">
+                  <div className="shrink-0">{s.icon}</div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-xl md:text-2xl font-semibold uppercase">{s.title}</h3>
+                    <p className="mt-1 text-gray-300">{s.desc}</p>
 
-              {/* Benefits bullets */}
-              <div className="flex flex-wrap gap-3 mb-6">
-                {service.bullets.map((item, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-2 border border-indigo-500/40 text-indigo-300 text-sm px-3 py-1.5 rounded-md uppercase tracking-wide"
-                  >
-                    <FaCheck className="text-xs text-indigo-400" />
-                    <span>{item}</span>
+                    <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {s.bullets.map((b) => (
+                        <li key={b} className="flex items-center gap-2 text-sm text-gray-200/90">
+                          <FaCheck className="text-indigo-300" />
+                          <span className="truncate">{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* push CTA to bottom for consistent heights */}
+                    <div className="mt-5 pt-1" />
                   </div>
-                ))}
-              </div>
-
-              {/* Outcomes chips */}
-              <div className="flex flex-wrap gap-2">
-                {service.outcomes.map((o, i) => (
-                  <span
-                    key={i}
-                    className="text-xs bg-indigo-900/30 text-indigo-200 border border-indigo-500/20 px-2.5 py-1 rounded-full"
+                </div>
+                <div className="mt-auto pt-4">
+                  <Link
+                    href='/contact'
+                    className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium text-indigo-100 hover:bg-white/15 transition"
                   >
-                    {o}
-                  </span>
-                ))}
-              </div>
-
-              {/* CTA */}
-              <div className="mt-6">
-                <Link
-                  href={service.cta.href}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-300 hover:text-indigo-200"
-                >
-                  {service.cta.label} <span aria-hidden>→</span>
-                </Link>
-              </div>
+                    Learn More<span aria-hidden>→</span>
+                  </Link>
+                </div>
+              </GlassCard>
             </motion.div>
           ))}
         </div>
 
-        {/* Mini Process */}
-        <div className="mt-20">
-          <motion.h3
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-semibold text-center mb-10"
-          >
-            A Simple, Predictable Process
+        {/* Process → Timeline (equal-height cards) */}
+        <div className="mt-14 md:mt-20">
+          <motion.h3 {...fadeUp()} className="text-2xl uppercase md:text-3xl font-semibold text-center">
+            A simple, predictable process
           </motion.h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {process.map((step, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-[#0b0b0b] p-6 rounded-2xl ring-1 ring-indigo-500/20"
-              >
-                <div className="flex items-center gap-3 text-indigo-300">
-                  <span className="text-lg">{step.icon}</span>
-                  <span className="text-sm font-semibold">{step.title}</span>
-                </div>
-                <p className="text-gray-400 text-sm mt-3">{step.copy}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+          {/* Vertical timeline (mobile–md) */}
+          <div className="mt-8 lg:hidden relative">
+            <div aria-hidden className="absolute left-6 top-0 bottom-0 w-px bg-white/10" />
+            <ol className="space-y-6">
+              {PROCESS.map((step, i) => (
+                <motion.li key={step.title} {...fadeUp(i)} className="h-full">
+                  <div className="relative pl-16">
+                    <span
+                      aria-hidden
+                      className="absolute left-0 top-2 flex h-12 w-12 items-center justify-center rounded-full
+                                 border border-white/15 bg-white/10 backdrop-blur-xl text-indigo-200
+                                 shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
+                    >
+                      {step.icon}
+                    </span>
 
-        {/* What You Get / Assurances */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2 bg-[#0b0b0b] p-8 rounded-2xl ring-1 ring-indigo-500/20">
-            <h4 className="text-xl font-semibold mb-3">What You Get</h4>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-300">
-              <li className="bg-black/40 rounded-xl p-3">Kickoff strategy workshop</li>
-              <li className="bg-black/40 rounded-xl p-3">Sitemap, wireframes & UI kit</li>
-              <li className="bg-black/40 rounded-xl p-3">Copy & SEO guidance</li>
-              <li className="bg-black/40 rounded-xl p-3">Analytics & conversion tracking</li>
-              <li className="bg-black/40 rounded-xl p-3">Schema & redirects (SEO‑safe)</li>
-              <li className="bg-black/40 rounded-xl p-3">Speed, security & backups</li>
-              <li className="bg-black/40 rounded-xl p-3">Post‑launch support & training</li>
-              <li className="bg-black/40 rounded-xl p-3">Monthly growth reporting (plans)</li>
-            </ul>
-          </div>
-          <div className="bg-[#0b0b0b] p-8 rounded-2xl ring-1 ring-indigo-500/20">
-            <h4 className="text-xl font-semibold mb-3">Assurances</h4>
-            <div className="flex flex-wrap gap-2">
-              {assurances.map((a, i) => (
-                <span
-                  key={i}
-                  className="inline-flex items-center gap-2 bg-indigo-900/30 text-indigo-200 border border-indigo-500/20 px-3 py-1.5 rounded-full text-xs"
-                >
-                  {a.icon}
-                  {a.label}
-                </span>
+                    <GlassCard className="p-5 h-full min-h-[140px] flex flex-col">
+                      <div className="flex items-center gap-2 text-indigo-200">
+                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-xs border border-white/15">
+                          {i + 1}
+                        </span>
+                        <span className="font-medium">{step.title}</span>
+                      </div>
+                      <p className="mt-2.5 text-sm text-gray-300 flex-1">{step.copy}</p>
+                    </GlassCard>
+                  </div>
+                </motion.li>
               ))}
-            </div>
-            <p className="text-gray-400 text-sm mt-4">
-              We ship with a documented checklist, rollback plan, and monitoring so launch days feel boring—in a good way.
-            </p>
+            </ol>
           </div>
-        </div>
 
-        {/* CTA Ribbon */}
-        <div className="mt-20 rounded-3xl border border-indigo-500/30 bg-gradient-to-br from-indigo-900/20 to-transparent p-8 text-center">
-          <h3 className="text-2xl md:text-3xl font-semibold">
-            Ready to turn searches into customers?
-          </h3>
-          <p className="text-gray-400 mt-2 max-w-2xl mx-auto">
-            Pick a plan or book a quick call—we’ll map out impact, timing, and the fastest path to ROI.
-          </p>
-          <div className="mt-6 flex items-center justify-center gap-4">
-            <Link
-              href="/pricing"
-              className="rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
-            >
-              View Packages
-            </Link>
-            <Link
-              href="/contact"
-              className="rounded-md border border-indigo-500/50 px-6 py-3 text-sm font-semibold text-indigo-300 hover:border-indigo-400"
-            >
-              Book a Discovery Call
-            </Link>
+          {/* Horizontal timeline (lg+) */}
+          <div className="mt-10 hidden lg:block">
+            <div className="relative">
+              <div aria-hidden className="absolute left-0 right-0 top-6 h-px bg-white/10" />
+              <ol className="grid grid-cols-4 items-stretch gap-6">
+                {PROCESS.map((step, i) => (
+                  <motion.li key={step.title} {...fadeUp(i)} className="h-full">
+                    <div className="flex h-full flex-col items-center text-center">
+                      <span
+                        aria-hidden
+                        className="z-10 flex h-12 w-12 items-center justify-center rounded-full
+                                   border border-white/15 bg-white/10 backdrop-blur-xl text-indigo-200
+                                   shadow-[0_8px_30px_rgba(0,0,0,0.15)]"
+                      >
+                        {step.icon}
+                      </span>
+                      <GlassCard className="mt-4 p-5 w-full h-full min-h-[160px] flex flex-col">
+                        <div className="flex items-center justify-center gap-2 text-indigo-200">
+                          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-xs border border-white/15">
+                            {i + 1}
+                          </span>
+                          <span className="font-medium">{step.title}</span>
+                        </div>
+                        <p className="mt-2 text-sm text-gray-300 flex-1">{step.copy}</p>
+                      </GlassCard>
+                    </div>
+                  </motion.li>
+                ))}
+              </ol>
+            </div>
           </div>
         </div>
       </div>
