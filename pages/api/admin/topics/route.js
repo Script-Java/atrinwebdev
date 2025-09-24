@@ -22,40 +22,27 @@ export async function OPTIONS() {
 }
 
 export async function GET(req) {
-  // Auth (admin)
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   if (!token || token.role !== "admin") {
     return noCache(NextResponse.json({ error: "Forbidden" }, { status: 403 }));
   }
-
   const topics = await getTopics();
-  return noCache(NextResponse.json({ topics }, { status: 200 }));
+  return noCache(NextResponse.json({ topics }));
 }
 
 export async function POST(req) {
-  // Auth (admin)
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   if (!token || token.role !== "admin") {
     return noCache(NextResponse.json({ error: "Forbidden" }, { status: 403 }));
   }
-
   let body;
-  try {
-    body = await req.json();
-  } catch {
+  try { body = await req.json(); } catch { 
     return noCache(NextResponse.json({ error: "Invalid JSON body" }, { status: 400 }));
   }
-
   const topic = (body?.topic || "").trim();
-  if (!topic) {
-    return noCache(NextResponse.json({ error: "Invalid topic" }, { status: 400 }));
-  }
-
+  if (!topic) return noCache(NextResponse.json({ error: "Invalid topic" }, { status: 400 }));
   const r = await addTopic(topic);
-  if (!r?.ok) {
-    return noCache(NextResponse.json({ error: r?.error || "Failed to add" }, { status: 400 }));
-  }
-
+  if (!r?.ok) return noCache(NextResponse.json({ error: r.error || "Add failed" }, { status: 400 }));
   const topics = await getTopics();
   return noCache(NextResponse.json({ ok: true, topics }, { status: 201 }));
 }

@@ -1,163 +1,87 @@
 // src/lib/topics.js
-import { sql } from "@/lib/db";
+import { neon } from "@neondatabase/serverless";
 
-/**
- * Returns the topics as a simple array of strings, ordered by position.
- */
+// DATABASE_URL must include sslmode=require on Neon
+const sql = neon(process.env.DATABASE_URL);
+
+// return topics ordered by position asc
 export async function getTopics() {
-  const rows = await sql/*sql*/`
-    SELECT title
-    FROM "Topic"
-    ORDER BY position ASC
-  `;
+  const rows = await sql/*sql*/`select id, title, position from "Topic" order by position asc`;
   return rows.map(r => r.title);
 }
 
-/**
- * Appends a new topic to the end.
- */
 export async function addTopic(topic) {
   const t = (topic || "").trim();
   if (!t) return { ok: false, error: "Empty topic" };
-
-  // Find next position (0-based)
-  const [{ next_pos }] = await sql/*sql*/`
-    SELECT COALESCE(MAX(position), -1) + 1 AS next_pos
-    FROM "Topic"
-  `;
-
-  await sql/*sql*/`
-    INSERT INTO "Topic" (title, position)
-    VALUES (${t}, ${next_pos})
-  `;
-
+  const [{ max }] = await sql/*sql*/`select coalesce(max(position), -1) as max from "Topic"`;
+  const nextPos = (max ?? -1) + 1;
+  await sql/*sql*/`insert into "Topic"(title, position) values (${t}, ${nextPos})`;
   return { ok: true };
 }
 
-/**
- * Deletes topic at zero-based index and compacts positions.
- */
 export async function deleteTopic(index) {
   const i = Number(index);
   if (!Number.isInteger(i) || i < 0) return { ok: false, error: "Bad index" };
 
-  return await sql.begin(async (tx) => {
-    const rows = await tx/*sql*/`
-      SELECT id, position
-      FROM "Topic"
-      ORDER BY position ASC
-      OFFSET ${i} LIMIT 1
-    `;
-    if (rows.length === 0) return { ok: false, error: "Out of range" };
+  // find id at that position
+  const rows = await sql/*sql*/`select id from "Topic" where position = ${i}`;
+  if (rows.length === 0) return { ok: false, error: "Out of range" };
 
-    const { id, position } = rows[0];
+  const id = rows[0].id;
 
-    await tx/*sql*/`DELETE FROM "Topic" WHERE id = ${id}`;
+  // delete it
+  await sql/*sql*/`delete from "Topic" where id = ${id}`;
 
-    // Shift everything after deleted position down by 1
-    await tx/*sql*/`
-      UPDATE "Topic"
-      SET position = position - 1
-      WHERE position > ${position}
-    `;
-
-    return { ok: true };
-  });
+  // shift down positions above i
+  await sql/*sql*/`
+    update "Topic"
+       set position = position - 1
+     where position > ${i};
+  `;
+  return { ok: true };
 }
 
-/**
- * Reorders topic from index `fromIndex` to `toIndex` (zero-based).
- */
 export async function moveTopic(fromIndex, toIndex) {
   const from = Number(fromIndex);
   const to = Number(toIndex);
-
   if (![from, to].every(Number.isInteger) || from < 0 || to < 0) {
     return { ok: false, error: "Bad index" };
   }
   if (from === to) return { ok: true };
 
-  return await sql.begin(async (tx) => {
-    // Locate the moving row
-    const movingRows = await tx/*sql*/`
-      SELECT id, position
-      FROM "Topic"
-      ORDER BY position ASC
-      OFFSET ${from} LIMIT 1
+  // grab id of the item at `from`
+  const rows = await sql/*sql*/`select id from "Topic" where position = ${from}`;
+  if (rows.length === 0) return { ok: false, error: "Out of range" };
+  const id = rows[0].id;
+
+  // make room at `to` then plug `id` there
+  if (to > from) {
+    await sql/*sql*/`
+      update "Topic"
+         set position = position - 1
+       where position > ${from} and position <= ${to};
     `;
-    if (movingRows.length === 0) return { ok: false, error: "Out of range" };
-
-    const { id, position: fromPos } = movingRows[0];
-
-    // Target is "to" index; fetch its position boundary
-    const targetRows = await tx/*sql*/`
-      SELECT position
-      FROM "Topic"
-      ORDER BY position ASC
-      OFFSET ${to} LIMIT 1
+  } else {
+    await sql/*sql*/`
+      update "Topic"
+         set position = position + 1
+       where position >= ${to} and position < ${from};
     `;
-
-    // If moving beyond the end, place at tail
-    let toPos;
-    if (targetRows.length === 0) {
-      const [{ max_pos }] = await tx/*sql*/`
-        SELECT COALESCE(MAX(position), -1) AS max_pos
-        FROM "Topic"
-      `;
-      toPos = (max_pos ?? -1) + 1;
-    } else {
-      toPos = targetRows[0].position;
-    }
-
-    if (fromPos < toPos) {
-      // Moving down: slide block up
-      await tx/*sql*/`
-        UPDATE "Topic"
-        SET position = position - 1
-        WHERE position > ${fromPos} AND position <= ${toPos}
-      `;
-    } else {
-      // Moving up: slide block down
-      await tx/*sql*/`
-        UPDATE "Topic"
-        SET position = position + 1
-        WHERE position >= ${toPos} AND position < ${fromPos}
-      `;
-    }
-
-    // Place the moving row into the target slot
-    await tx/*sql*/`
-      UPDATE "Topic"
-      SET position = ${toPos}
-      WHERE id = ${id}
-    `;
-
-    return { ok: true };
-  });
+  }
+  await sql/*sql*/`update "Topic" set position = ${to} where id = ${id}`;
+  return { ok: true };
 }
 
-/**
- * Pops the first topic and compacts positions. Returns string or null.
- */
+// Pop first topic (position 0) and renumber others.
+// Returns the consumed title or null.
 export async function getNextTopic() {
-  return await sql.begin(async (tx) => {
-    const rows = await tx/*sql*/`
-      SELECT id, title, position
-      FROM "Topic"
-      ORDER BY position ASC
-      LIMIT 1
-    `;
-    if (rows.length === 0) return null;
+  const first = await sql/*sql*/`select id, title from "Topic" where position = 0`;
+  if (first.length === 0) return null;
+  const { id, title } = first[0];
 
-    const { id, title, position } = rows[0];
-
-    await tx/*sql*/`DELETE FROM "Topic" WHERE id = ${id}`;
-    await tx/*sql*/`
-      UPDATE "Topic"
-      SET position = position - 1
-      WHERE position > ${position}
-    `;
-
-    return title;
-  });
+  // delete it
+  await sql/*sql*/`delete from "Topic" where id = ${id}`;
+  // shift all remaining down by 1
+  await sql/*sql*/`update "Topic" set position = position - 1`;
+  return title;
 }

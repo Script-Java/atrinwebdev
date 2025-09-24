@@ -26,19 +26,16 @@ export async function DELETE(req, { params }) {
   if (!token || token.role !== "admin") {
     return noCache(NextResponse.json({ error: "Forbidden" }, { status: 403 }));
   }
-
   const idx = Number(params.index);
   if (!Number.isInteger(idx) || idx < 0) {
     return noCache(NextResponse.json({ error: "Invalid index" }, { status: 400 }));
   }
-
   const r = await deleteTopic(idx);
   if (!r?.ok) {
-    return noCache(NextResponse.json({ error: r?.error || "Delete failed" }, { status: 400 }));
+    return noCache(NextResponse.json({ error: r.error || "Delete failed" }, { status: 400 }));
   }
-
   const topics = await getTopics();
-  return noCache(NextResponse.json({ ok: true, topics }, { status: 200 }));
+  return noCache(NextResponse.json({ ok: true, topics }));
 }
 
 export async function PUT(req, { params }) {
@@ -46,29 +43,22 @@ export async function PUT(req, { params }) {
   if (!token || token.role !== "admin") {
     return noCache(NextResponse.json({ error: "Forbidden" }, { status: 403 }));
   }
-
   const from = Number(params.index);
   if (!Number.isInteger(from) || from < 0) {
     return noCache(NextResponse.json({ error: "Invalid index" }, { status: 400 }));
   }
-
   let body;
-  try {
-    body = await req.json();
-  } catch {
+  try { body = await req.json(); } catch {
     return noCache(NextResponse.json({ error: "Invalid JSON body" }, { status: 400 }));
   }
-
   const to = Number(body?.toIndex);
   if (!Number.isInteger(to) || to < 0) {
     return noCache(NextResponse.json({ error: "Invalid toIndex" }, { status: 400 }));
   }
-
   const r = await moveTopic(from, to);
   if (!r?.ok) {
-    return noCache(NextResponse.json({ error: r?.error || "Move failed" }, { status: 400 }));
+    return noCache(NextResponse.json({ error: r.error || "Move failed" }, { status: 400 }));
   }
-
   const topics = await getTopics();
-  return noCache(NextResponse.json({ ok: true, topics }, { status: 200 }));
+  return noCache(NextResponse.json({ ok: true, topics }));
 }

@@ -2,31 +2,25 @@
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-/**
- * ✅ Do NOT run on /api/* or static assets.
- * This is critical to avoid 405s on PUT/DELETE/POST to your API routes.
- */
-export const config = {
-  matcher: [
-    "/((?!api/|_next/|static/|favicon\\.ico|robots\\.txt|sitemap\\.xml|rss$).*)",
-  ],
-};
+export const config = { matcher: ["/:path*"] };
 
 export async function middleware(req) {
-  // Always allow preflight through (belt & suspenders)
-  if (req.method === "OPTIONS") return NextResponse.next();
-
   const url = req.nextUrl.clone();
   const path = url.pathname;
   const host = req.headers.get("host") || "";
-
   const isDev = process.env.NODE_ENV !== "production";
   const isCRMSub = host.startsWith("crm.");
-  const isSignin = path === "/signin";
 
-  // ------------------------------
-  // DEV: protect /crm pages only
-  // ------------------------------
+  const isStatic =
+    path.startsWith("/_next/") ||
+    path.startsWith("/favicon") ||
+    /\.(?:png|jpg|jpeg|gif|svg|webp|ico|css|js|map|woff2?|ttf|eot)$/.test(path);
+
+  // Never touch any API route
+  if (path.startsWith("/api/")) return NextResponse.next();
+  if (isStatic) return NextResponse.next();
+
+  // Dev: protect /crm pages locally
   if (isDev) {
     if (path.startsWith("/crm")) {
       const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -39,26 +33,20 @@ export async function middleware(req) {
     return NextResponse.next();
   }
 
-  // ------------------------------
-  // PROD: crm lives ONLY on crm.*
-  // ------------------------------
-
-  // 1) Force /signin and any /crm* path to the CRM subdomain
+  // Prod: force /signin and /crm* to crm subdomain
+  const isSignin = path === "/signin";
   if (!isCRMSub && (isSignin || path.startsWith("/crm"))) {
-    const dest = new URL(
-      path + url.search,
-      `https://crm.${host.replace(/^www\./, "")}`
-    );
+    const dest = new URL(path + url.search, `https://crm.${host.replace(/^www\./, "")}`);
     return NextResponse.redirect(dest);
   }
 
-  // 2) On crm. home, serve the CRM app (rewrite "/" -> "/crm")
+  // On crm subdomain, rewrite "/" -> "/crm"
   if (isCRMSub && path === "/") {
     url.pathname = "/crm";
     return NextResponse.rewrite(url);
   }
 
-  // 3) Require auth for CRM pages on crm. (APIs are excluded by matcher)
+  // On crm subdomain, protect /crm pages (not APIs)
   if (isCRMSub && path.startsWith("/crm")) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (!token) {
@@ -68,6 +56,5 @@ export async function middleware(req) {
     }
   }
 
-  // Everything else passes through
   return NextResponse.next();
 }
