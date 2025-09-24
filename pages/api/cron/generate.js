@@ -1,5 +1,5 @@
 // pages/api/cron/generate.js
-import { chat } from "@/lib/ai/chat";
+import { chat } from "@/lib/blog-ai/chat";
 import { upsertFileInRepo } from "@/lib/github";
 import { getNextTopic } from "@/lib/topics";
 import { buildCoverSVG } from "@/lib/cover";
