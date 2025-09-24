@@ -1,164 +1,64 @@
-// src/lib/topics.js
-import path from "path";
-import fs from "fs/promises";
+// middleware.js (root)
+import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-const FILE_PATH = "topics.json";
+export const config = { matcher: ["/:path*"] };
 
-const GH = {
-  token: process.env.GITHUB_TOKEN,
-  owner: process.env.GITHUB_REPO_OWNER,
-  repo: process.env.GITHUB_REPO_NAME,
-  branch: process.env.GITHUB_BRANCH || "main",
-};
-const USE_GITHUB = !!(process.env.VERCEL && GH.token && GH.owner && GH.repo);
+export async function middleware(req) {
+  // Let preflight sail through
+  if (req.method === "OPTIONS") return NextResponse.next();
 
-function safeParse(json, fallback) {
-  try { return JSON.parse(json); } catch { return fallback; }
-}
+  const url  = req.nextUrl.clone();
+  const path = url.pathname;
+  const host = req.headers.get("host") || "";
+  const isDev = process.env.NODE_ENV !== "production";
+  const isCRMSub = host.startsWith("crm.");
 
-async function readFromGitHub(filePath) {
-  const url = `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${encodeURIComponent(filePath)}?ref=${encodeURIComponent(GH.branch)}`;
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${GH.token}`,
-      Accept: "application/vnd.github+json",
-      "User-Agent": "topics-bot",
-    },
-    cache: "no-store",
-  });
-  if (!res.ok) {
-    if (res.status === 404) return { content: "[]", sha: null };
-    throw new Error(`GitHub read failed ${res.status}: ${await res.text()}`);
-  }
-  const json = await res.json();
-  const content = Buffer.from(json.content || "", "base64").toString("utf8");
-  return { content, sha: json.sha };
-}
+  const isStatic =
+    path.startsWith("/_next/") ||
+    path.startsWith("/favicon") ||
+    /\.(?:png|jpg|jpeg|gif|svg|webp|ico|css|js|map|woff2?|ttf|eot)$/.test(path);
+  const isAuthRoute = path.startsWith("/api/auth");
+  const isApi = path.startsWith("/api/");
+  const isSignin = path === "/signin";
 
-async function writeToGitHub(filePath, content, message, sha) {
-  const url = `https://api.github.com/repos/${GH.owner}/${GH.repo}/contents/${encodeURIComponent(filePath)}`;
-  const body = {
-    message,
-    content: Buffer.from(content, "utf8").toString("base64"),
-    branch: GH.branch,
-    ...(sha ? { sha } : {}),
-  };
-  const res = await fetch(url, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${GH.token}`,
-      Accept: "application/vnd.github+json",
-      "User-Agent": "topics-bot",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) throw new Error(`GitHub write failed ${res.status}: ${await res.text()}`);
-  return res.json();
-}
-
-async function readLocal(filePath) {
-  const abs = path.join(process.cwd(), filePath);
-  try { return await fs.readFile(abs, "utf8"); } catch { return "[]"; }
-}
-async function writeLocal(filePath, content) {
-  const abs = path.join(process.cwd(), filePath);
-  await fs.mkdir(path.dirname(abs), { recursive: true });
-  await fs.writeFile(abs, content, "utf8");
-}
-
-function normalize(raw) {
-  return Array.isArray(raw) ? raw : (raw?.topics || []);
-}
-
-/* ---------- Public API ---------- */
-export async function getTopics() {
-  if (USE_GITHUB) {
-    const gh = await readFromGitHub(FILE_PATH);
-    return normalize(safeParse(gh.content || "[]", []));
-  }
-  return normalize(safeParse(await readLocal(FILE_PATH), []));
-}
-
-export async function addTopic(topic) {
-  const t = (topic || "").trim();
-  if (!t) return { ok: false, error: "Empty topic" };
-
-  if (USE_GITHUB) {
-    const gh = await readFromGitHub(FILE_PATH);
-    const topics = normalize(safeParse(gh.content || "[]", []));
-    topics.push(t);
-    await writeToGitHub(FILE_PATH, JSON.stringify(topics, null, 2) + "\n", `chore(topics): add "${t}"`, gh.sha || undefined);
-    return { ok: true };
+  // DEV: protect /crm and its APIs, but don't rewrite anything
+  if (isDev) {
+    if (path.startsWith("/crm") || path.startsWith("/api/crm") || path.startsWith("/api/admin")) {
+      const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+      if (!token) {
+        const signin = new URL("/signin", req.url);
+        signin.searchParams.set("callbackUrl", `${req.nextUrl.origin}${path}${url.search}`);
+        return NextResponse.redirect(signin);
+      }
+    }
+    return NextResponse.next();
   }
 
-  const topics = normalize(safeParse(await readLocal(FILE_PATH), []));
-  topics.push(t);
-  await writeLocal(FILE_PATH, JSON.stringify(topics, null, 2) + "\n");
-  return { ok: true };
-}
-
-export async function deleteTopic(index) {
-  const i = Number(index);
-  if (!Number.isInteger(i) || i < 0) return { ok: false, error: "Bad index" };
-
-  if (USE_GITHUB) {
-    const gh = await readFromGitHub(FILE_PATH);
-    const topics = normalize(safeParse(gh.content || "[]", []));
-    if (i >= topics.length) return { ok: false, error: "Out of range" };
-    const removed = topics.splice(i, 1)[0];
-    await writeToGitHub(FILE_PATH, JSON.stringify(topics, null, 2) + "\n", `chore(topics): delete "${removed}"`, gh.sha || undefined);
-    return { ok: true };
+  // PROD: CRM only "exists" on crm.*; redirect apex /signin and /crm* to crm.*
+  if (!isCRMSub && (isSignin || path.startsWith("/crm"))) {
+    const dest = new URL(path + url.search, `https://crm.${host.replace(/^www\./, "")}`);
+    return NextResponse.redirect(dest);
   }
 
-  const topics = normalize(safeParse(await readLocal(FILE_PATH), []));
-  if (i >= topics.length) return { ok: false, error: "Out of range" };
-  topics.splice(i, 1);
-  await writeLocal(FILE_PATH, JSON.stringify(topics, null, 2) + "\n");
-  return { ok: true };
-}
+  // Always let static, next-auth, and other API routes pass through (no rewrites)
+  if (isStatic || isAuthRoute) return NextResponse.next();
 
-export async function moveTopic(fromIndex, toIndex) {
-  const from = Number(fromIndex), to = Number(toIndex);
-  if (![from, to].every(Number.isInteger) || from < 0 || to < 0)
-    return { ok: false, error: "Bad index" };
-
-  const move = (arr, a, b) => {
-    if (a === b) return arr;
-    if (a < 0 || a >= arr.length || b < 0 || b >= arr.length) return arr;
-    const item = arr.splice(a, 1)[0];
-    arr.splice(b, 0, item);
-    return arr;
-  };
-
-  if (USE_GITHUB) {
-    const gh = await readFromGitHub(FILE_PATH);
-    const topics = normalize(safeParse(gh.content || "[]", []));
-    move(topics, from, to);
-    await writeToGitHub(FILE_PATH, JSON.stringify(topics, null, 2) + "\n", `chore(topics): reorder ${from}→${to}`, gh.sha || undefined);
-    return { ok: true };
+  // On CRM subdomain: rewrite only "/" → "/crm" (never touch /api/*)
+  if (isCRMSub && path === "/") {
+    url.pathname = "/crm";
+    return NextResponse.rewrite(url);
   }
 
-  const topics = normalize(safeParse(await readLocal(FILE_PATH), []));
-  move(topics, from, to);
-  await writeLocal(FILE_PATH, JSON.stringify(topics, null, 2) + "\n");
-  return { ok: true };
-}
-
-export async function getNextTopic() {
-  if (USE_GITHUB) {
-    const gh = await readFromGitHub(FILE_PATH);
-    const topics = normalize(safeParse(gh.content || "[]", []));
-    const next = topics.shift() ?? null;
-    await writeToGitHub(FILE_PATH, JSON.stringify(topics, null, 2) + "\n",
-      next ? `chore(topics): consume "${next}"` : "chore(topics): consume(empty)",
-      gh.sha || undefined
-    );
-    return next || null;
+  // Require auth for CRM pages & CRM/Admin APIs on crm.*
+  if (isCRMSub && (path.startsWith("/crm") || path.startsWith("/api/crm") || path.startsWith("/api/admin"))) {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    if (!token) {
+      const signin = new URL("/signin", `${url.protocol}//${host}`);
+      signin.searchParams.set("callbackUrl", `${url.protocol}//${host}${path}${url.search}`);
+      return NextResponse.redirect(signin);
+    }
   }
 
-  const topics = normalize(safeParse(await readLocal(FILE_PATH), []));
-  const next = topics.shift() ?? null;
-  await writeLocal(FILE_PATH, JSON.stringify(topics, null, 2) + "\n");
-  return next || null;
+  return NextResponse.next();
 }
